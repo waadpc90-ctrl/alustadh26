@@ -1,0 +1,3943 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="بوصلة الأستاذ" />
+  <meta name="theme-color" content="#0F172A" />
+  <link rel="manifest" href="manifest.json" />
+  <link id="appleTouchIconLink" rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png" />
+  <link rel="icon" type="image/png" sizes="192x192" href="icon-192.png" />
+  <title>بوصلة الأستاذ v4.4 - النسخة الكاملة للآيفون (iOS)</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg-main: #0F172A;
+      --bg-card: #1E293B;
+      --bg-sub: #0B1120;
+      --bg-elevated: #334155;
+      --text-main: #F8FAFC;
+      --text-muted: #94A3B8;
+      --border-color: #334155;
+      --indigo-400: #818CF8;
+      --indigo-500: #6366F1;
+      --indigo-600: #4F46E5;
+      --purple-500: #A855F7;
+      --purple-600: #9333EA;
+      --intosab-purple: #C084FC;
+      --emerald-500: #10B981;
+      --emerald-600: #059669;
+      --rose-500: #F43F5E;
+      --rose-600: #E11D48;
+      --amber-400: #FBBF24;
+      --amber-500: #F59E0B;
+      --amber-600: #D97706;
+      --teal-600: #0D9488;
+    }
+    body.light-mode {
+      --bg-main: #F8FAFC;
+      --bg-card: #FFFFFF;
+      --bg-sub: #F1F5F9;
+      --bg-elevated: #E2E8F0;
+      --text-main: #0F172A;
+      --text-muted: #64748B;
+      --border-color: #CBD5E1;
+    }
+    * {
+      box-sizing: border-box;
+      -webkit-tap-highlight-color: transparent;
+      font-family: 'Cairo', -apple-system, BlinkMacSystemFont, sans-serif;
+    }
+    body {
+      margin: 0;
+      padding: 0;
+      background-color: var(--bg-main);
+      color: var(--text-main);
+      padding-top: env(safe-area-inset-top, 0px);
+      padding-bottom: calc(84px + env(safe-area-inset-bottom, 16px));
+      overflow-x: hidden;
+      user-select: none;
+    }
+    input, textarea, select, button {
+      font-family: inherit;
+    }
+
+    /* Header Bar matching TopBarAndNav.kt */
+    .app-header {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background-color: var(--bg-card);
+      border-bottom: 1px solid var(--border-color);
+      padding: 10px 14px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.18);
+    }
+    .brand-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .logo-box {
+      width: 42px;
+      height: 42px;
+      border-radius: 13px;
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      box-shadow: 0 4px 12px rgba(79, 70, 229, 0.45);
+    }
+    .brand-title-row {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .brand-title {
+      font-size: 15px;
+      font-weight: 900;
+      margin: 0;
+      line-height: 1.2;
+      color: var(--text-main);
+    }
+    .version-pill {
+      font-size: 10px;
+      font-weight: 900;
+      color: var(--indigo-400);
+      background: rgba(99, 102, 241, 0.16);
+      border: 1px solid rgba(129, 140, 248, 0.4);
+      padding: 1px 6px;
+      border-radius: 6px;
+      direction: ltr;
+    }
+    .brand-sub {
+      font-size: 10px;
+      font-weight: 700;
+      color: var(--text-muted);
+      margin: 1px 0 0 0;
+    }
+    .header-actions {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .hdr-btn {
+      height: 36px;
+      min-width: 36px;
+      padding: 0 8px;
+      border-radius: 11px;
+      border: 1px solid var(--border-color);
+      background: var(--bg-sub);
+      color: var(--text-main);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 4px;
+      font-size: 11px;
+      font-weight: 800;
+      cursor: pointer;
+    }
+    .hdr-btn.active-tab {
+      background: var(--indigo-600);
+      border-color: var(--indigo-400);
+      color: #fff;
+    }
+    .hdr-btn.sub-badge {
+      background: rgba(16, 185, 129, 0.14);
+      border-color: rgba(16, 185, 129, 0.4);
+      color: var(--emerald-500);
+    }
+    .hdr-btn.trial-badge {
+      background: rgba(245, 158, 11, 0.15);
+      border-color: rgba(245, 158, 11, 0.4);
+      color: var(--amber-400);
+    }
+
+    /* Main Container & Cards */
+    .container {
+      max-width: 680px;
+      margin: 0 auto;
+      padding: 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .card {
+      background-color: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 20px;
+      padding: 14px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    }
+    .hero-card {
+      background: linear-gradient(135deg, #1E1B4B 0%, #312E81 55%, #0F172A 100%);
+      border: 1px solid rgba(129, 140, 248, 0.35);
+      border-radius: 22px;
+      padding: 16px;
+      color: #ffffff;
+      box-shadow: 0 8px 22px rgba(30, 27, 75, 0.45);
+    }
+
+    /* Grid & Flex helpers */
+    .row-between {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+    }
+    .row-wrap {
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+    .scroll-row {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      overflow-x: auto;
+      padding-bottom: 4px;
+      scrollbar-width: none;
+    }
+    .scroll-row::-webkit-scrollbar {
+      display: none;
+    }
+    .grid-2 {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 10px;
+    }
+    .grid-3 {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+    }
+    .grid-4 {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 6px;
+    }
+    .grid-5 {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 5px;
+    }
+
+    /* Buttons & Chips */
+    .btn {
+      border: none;
+      border-radius: 13px;
+      padding: 10px 14px;
+      font-size: 12px;
+      font-weight: 900;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      transition: transform 0.1s, opacity 0.15s;
+      color: #fff;
+    }
+    .btn:active {
+      transform: scale(0.97);
+    }
+    .btn-indigo { background: var(--indigo-600); }
+    .btn-purple { background: var(--purple-600); }
+    .btn-emerald { background: var(--emerald-500); }
+    .btn-rose { background: var(--rose-600); }
+    .btn-amber { background: var(--amber-500); color: #0F172A; }
+    .btn-teal { background: var(--teal-600); }
+    .btn-sub {
+      background: var(--bg-sub);
+      color: var(--text-main);
+      border: 1px solid var(--border-color);
+    }
+    .chip {
+      padding: 6px 11px;
+      border-radius: 10px;
+      font-size: 11px;
+      font-weight: 800;
+      border: 1px solid var(--border-color);
+      background: var(--bg-sub);
+      color: var(--text-muted);
+      cursor: pointer;
+      white-space: nowrap;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+    }
+    .chip.active {
+      background: var(--indigo-600);
+      color: #fff;
+      border-color: var(--indigo-400);
+    }
+    .chip.active-purple {
+      background: var(--purple-600);
+      color: #fff;
+      border-color: var(--intosab-purple);
+    }
+    .chip.active-emerald {
+      background: var(--emerald-600);
+      color: #fff;
+      border-color: var(--emerald-500);
+    }
+    .chip.active-rose {
+      background: var(--rose-600);
+      color: #fff;
+      border-color: var(--rose-500);
+    }
+    .chip.active-amber {
+      background: var(--amber-500);
+      color: #0F172A;
+      border-color: var(--amber-400);
+    }
+
+    /* Form Controls */
+    .input, .select, .textarea {
+      width: 100%;
+      padding: 10px 12px;
+      border-radius: 12px;
+      border: 1px solid var(--border-color);
+      background-color: var(--bg-sub);
+      color: var(--text-main);
+      font-size: 13px;
+      font-weight: 700;
+      outline: none;
+    }
+    .input:focus, .select:focus, .textarea:focus {
+      border-color: var(--indigo-500);
+    }
+    .label-sm {
+      font-size: 11px;
+      font-weight: 800;
+      color: var(--text-muted);
+      margin-bottom: 4px;
+      display: block;
+    }
+
+    /* Bottom Navigation matching WaadBottomNavBar */
+    .bottom-nav {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      z-index: 120;
+      background-color: var(--bg-card);
+      border-top: 1px solid var(--border-color);
+      padding: 6px 8px calc(6px + env(safe-area-inset-bottom, 10px));
+      display: flex;
+      justify-content: space-around;
+      box-shadow: 0 -4px 16px rgba(0, 0, 0, 0.22);
+    }
+    .nav-item {
+      flex: 1;
+      border: none;
+      background: transparent;
+      color: var(--text-muted);
+      padding: 6px 2px;
+      border-radius: 14px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 2px;
+      font-size: 10px;
+      font-weight: 800;
+      cursor: pointer;
+    }
+    .nav-item .nav-icon {
+      font-size: 18px;
+      line-height: 1;
+    }
+    .nav-item.active {
+      color: #fff;
+      background: var(--indigo-600);
+      box-shadow: 0 4px 12px rgba(79, 70, 229, 0.4);
+    }
+
+    /* Badges & Statuses */
+    .badge {
+      padding: 3px 8px;
+      border-radius: 8px;
+      font-size: 10px;
+      font-weight: 900;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+    }
+    .badge-intosab {
+      background: rgba(168, 85, 247, 0.2);
+      color: #C084FC;
+      border: 1px solid rgba(192, 132, 252, 0.5);
+    }
+    .badge-pass {
+      background: rgba(16, 185, 129, 0.16);
+      color: #10B981;
+      border: 1px solid rgba(16, 185, 129, 0.35);
+    }
+    .badge-fail {
+      background: rgba(244, 63, 94, 0.16);
+      color: #F43F5E;
+      border: 1px solid rgba(244, 63, 94, 0.35);
+    }
+    .badge-warn {
+      background: rgba(245, 158, 11, 0.16);
+      color: #FBBF24;
+      border: 1px solid rgba(245, 158, 11, 0.35);
+    }
+
+    /* Break Pill between Schedule Slots */
+    .break-pill {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 4px 12px;
+      margin: 2px 0;
+    }
+    .break-line {
+      flex: 1;
+      height: 1px;
+      background: rgba(245, 158, 11, 0.3);
+    }
+    .break-badge {
+      background: rgba(245, 158, 11, 0.12);
+      border: 1px solid rgba(245, 158, 11, 0.4);
+      color: var(--amber-400);
+      font-size: 10px;
+      font-weight: 900;
+      padding: 3px 10px;
+      border-radius: 999px;
+    }
+
+    /* Modals & Overlays */
+    .modal-backdrop {
+      position: fixed;
+      inset: 0;
+      z-index: 300;
+      background: rgba(2, 6, 23, 0.8);
+      backdrop-filter: blur(4px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 14px;
+    }
+    .modal-sheet {
+      width: 100%;
+      max-width: 540px;
+      max-height: 90vh;
+      overflow-y: auto;
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 24px;
+      padding: 18px;
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+    }
+    .fullscreen-overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 260;
+      background: var(--bg-main);
+      overflow-y: auto;
+      padding-top: env(safe-area-inset-top, 0px);
+      padding-bottom: env(safe-area-inset-bottom, 20px);
+    }
+
+    /* Speed Grading Custom Keypad */
+    .speed-key {
+      height: 46px;
+      border-radius: 11px;
+      border: 1.5px solid var(--border-color);
+      background: var(--bg-card);
+      color: var(--text-main);
+      font-size: 20px;
+      font-weight: 900;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .speed-key:active {
+      background: var(--indigo-600);
+      color: #fff;
+    }
+
+    /* Toast Notification */
+    .toast-bar {
+      position: fixed;
+      bottom: calc(88px + env(safe-area-inset-bottom, 12px));
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 500;
+      background: #0F172A;
+      color: #fff;
+      border: 1px solid var(--indigo-400);
+      padding: 10px 18px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 900;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.45);
+      white-space: nowrap;
+      max-width: 92vw;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    /* Print Media Query for Official A4 Sheets */
+    @media print {
+      body * {
+        visibility: hidden !important;
+      }
+      #printableArea, #printableArea * {
+        visibility: visible !important;
+      }
+      #printableArea {
+        position: absolute !important;
+        left: 0 !important;
+        top: 0 !important;
+        width: 100% !important;
+        margin: 0 !important;
+        padding: 8mm !important;
+        background: #ffffff !important;
+        color: #000000 !important;
+        box-shadow: none !important;
+        border: none !important;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- PIN Lock Fullscreen Overlay -->
+  <div id="pinLockOverlay" class="modal-backdrop" style="display:none; z-index:450;">
+    <div class="modal-sheet" style="max-width:380px; text-align:center;">
+      <div style="width:64px;height:64px;border-radius:50%;background:rgba(99,102,241,0.18);display:flex;align-items:center;justify-content:center;margin:0 auto 12px;font-size:28px;">🔒</div>
+      <h2 style="margin:0 0 6px;font-size:20px;font-weight:900;">التطبيق مقفل</h2>
+      <p style="margin:0 0 16px;font-size:12px;color:var(--text-muted);font-weight:700;">يرجى إدخال رمز المرور (PIN) للوصول إلى السجلات.</p>
+      <input id="pinUnlockInput" type="password" inputmode="numeric" class="input" placeholder="رمز المرور (PIN)" style="text-align:center;font-size:20px;letter-spacing:4px;margin-bottom:10px;" oninput="checkPinUnlock(this.value)" />
+      <div id="pinUnlockError" style="color:var(--rose-500);font-size:12px;font-weight:800;display:none;">رمز المرور غير صحيح</div>
+    </div>
+  </div>
+
+  <!-- Top App Bar (1:1 Match with WaadHeaderBar in TopBarAndNav.kt) -->
+  <header class="app-header">
+    <div class="brand-row">
+      <!-- 3D Compass + Academic Book + Mortarboard SVG Icon -->
+      <div class="logo-box">
+        <svg viewBox="0 0 100 100" width="42" height="42">
+          <defs>
+            <linearGradient id="bgGrad" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0%" stop-color="#312E81" />
+              <stop offset="50%" stop-color="#4F46E5" />
+              <stop offset="100%" stop-color="#7C3AED" />
+            </linearGradient>
+            <linearGradient id="goldGrad" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0%" stop-color="#FDE047" />
+              <stop offset="50%" stop-color="#F59E0B" />
+              <stop offset="100%" stop-color="#B45309" />
+            </linearGradient>
+          </defs>
+          <rect x="2" y="2" width="96" height="96" rx="26" fill="url(#bgGrad)" />
+          <circle cx="50" cy="54" r="36" fill="none" stroke="url(#goldGrad)" stroke-width="4.5" />
+          <circle cx="50" cy="54" r="31" fill="#0F172A" />
+          <!-- Open Academic Book -->
+          <path d="M50 72 C40 68 29 69 24 72 L24 52 C29 49 40 49 50 53 Z" fill="#F8FAFC" />
+          <path d="M50 72 C60 68 71 69 76 72 L76 52 C71 49 60 49 50 53 Z" fill="#E2E8F0" />
+          <!-- Compass Needles -->
+          <polygon points="50,24 56,54 44,54" fill="#EF4444" />
+          <polygon points="50,82 56,54 44,54" fill="#CBD5E1" />
+          <circle cx="50" cy="54" r="4.5" fill="#FDE047" stroke="#0F172A" stroke-width="1.5" />
+          <!-- Mortarboard Cap -->
+          <polygon points="50,9 82,21 50,33 18,21" fill="#1E1B4B" stroke="#FDE047" stroke-width="2" />
+          <line x1="74" y1="24" x2="78" y2="39" stroke="#FBBF24" stroke-width="2.5" />
+          <circle cx="78" cy="40" r="3" fill="#F59E0B" />
+        </svg>
+      </div>
+      <div>
+        <div class="brand-title-row">
+          <h1 class="brand-title">بوصلة الأستاذ</h1>
+          <span class="version-pill">v4.4</span>
+        </div>
+        <p class="brand-sub">تطوير وبرمجة الاستاذ وعد مجيد</p>
+      </div>
+    </div>
+
+    <div class="header-actions">
+      <button class="hdr-btn" onclick="toggleTheme()" id="themeBtn" title="الوضع الليلي/النهاري">🌙</button>
+      <button class="hdr-btn sub-badge" onclick="openActivationModal()" id="subBadgeBtn">👑 مفعل</button>
+      <button class="hdr-btn" id="hdrSchoolSettingsBtn" onclick="openSettingsTab('school')" title="إعدادات المدرسة والمدرس">🎓</button>
+      <button class="hdr-btn" id="hdrAppSettingsBtn" onclick="openSettingsTab('app')" title="إعدادات التطبيق">⚙️</button>
+    </div>
+  </header>
+
+  <!-- iOS Safari "Add to Home Screen" Guide Banner (Hidden once installed as PWA) -->
+  <div id="iosInstallBanner" style="display:none;max-width:680px;margin:8px auto 0;padding:0 12px;">
+    <div style="background:linear-gradient(135deg,#1E1B4B,#312E81);border:1px solid rgba(129,140,248,0.45);border-radius:16px;padding:10px 12px;color:#fff;display:flex;align-items:center;justify-content:space-between;gap:10px;box-shadow:0 6px 18px rgba(0,0,0,0.25);">
+      <div style="font-size:11px;font-weight:800;line-height:1.5;">
+        📲 <b>لتثبيت التطبيق على شاشة الآيفون:</b> اضغط زر المشاركة <b>(⬆️)</b> في متصفح سفاري ثم اختر <b>(إضافة إلى الشاشة الرئيسية ➕)</b>
+      </div>
+      <button class="chip active-rose" style="padding:4px 8px;font-size:10px;" onclick="dismissIosBanner()">إخفاء ✕</button>
+    </div>
+  </div>
+
+  <!-- Main Content Area -->
+  <main id="appMain" class="container"></main>
+
+  <!-- Fullscreen Speed Grading Studio Overlay -->
+  <div id="speedGradingOverlay" class="fullscreen-overlay" style="display:none;"></div>
+
+  <!-- Fullscreen Official Print Preview Studio Overlay -->
+  <div id="printStudioOverlay" class="fullscreen-overlay" style="display:none; background:#F1F5F9; color:#0F172A;"></div>
+
+  <!-- Universal Modal Container -->
+  <div id="modalContainer" class="modal-backdrop" style="display:none;" onclick="if(event.target===this) closeModal()">
+    <div id="modalContent" class="modal-sheet"></div>
+  </div>
+
+  <!-- Remote OTA Update Dialog (Matching GoogleDriveUpdateDialog in MainActivity.kt) -->
+  <div id="otaUpdateBackdrop" class="modal-backdrop" style="display:none; z-index:480;">
+    <div class="modal-sheet" style="max-width:400px; text-align:center;">
+      <div style="width:58px;height:58px;border-radius:18px;background:linear-gradient(135deg,#6366F1,#9333EA);display:flex;align-items:center;justify-content:center;margin:0 auto 12px;font-size:28px;color:#fff;">🔄</div>
+      <h3 id="otaUpdateTitle" style="margin:0 0 6px;font-size:18px;font-weight:900;">تحديث جديد متوفر للتطبيق</h3>
+      <div id="otaUpdateVersionBadge" style="display:inline-block;padding:3px 10px;border-radius:8px;background:rgba(99,102,241,0.16);color:var(--indigo-400);font-size:11px;font-weight:900;margin-bottom:10px;"></div>
+      <div id="otaUpdateNotes" style="font-size:12px;font-weight:700;color:var(--text-muted);background:var(--bg-sub);padding:10px;border-radius:12px;margin-bottom:14px;display:none;"></div>
+      <button class="btn btn-emerald" style="width:100%;height:46px;font-size:14px;margin-bottom:8px;" onclick="confirmOtaUpdateNow()">موافق</button>
+      <button class="btn btn-sub" style="width:100%;height:40px;" onclick="dismissOtaUpdate()">لاحقاً</button>
+    </div>
+  </div>
+
+  <!-- Toast Banner -->
+  <div id="toastBar" class="toast-bar" style="display:none;"></div>
+
+  <!-- Bottom Navigation Bar -->
+  <nav class="bottom-nav">
+    <button class="nav-item active" id="nav_dashboard" onclick="switchView('dashboard')">
+      <span class="nav-icon">🏠</span>
+      <span>الرئيسية</span>
+    </button>
+    <button class="nav-item" id="nav_students" onclick="switchView('students')">
+      <span class="nav-icon">👥</span>
+      <span>الطلاب</span>
+    </button>
+    <button class="nav-item" id="nav_add" onclick="switchView('add')">
+      <span class="nav-icon">➕</span>
+      <span>إضافة</span>
+    </button>
+    <button class="nav-item" id="nav_attendance" onclick="switchView('attendance')">
+      <span class="nav-icon">📅</span>
+      <span>الحضور</span>
+    </button>
+    <button class="nav-item" id="nav_schedule" onclick="switchView('schedule')">
+      <span class="nav-icon">⏰</span>
+      <span>الجدول</span>
+    </button>
+  </nav>
+
+  <script>
+    /*************************************************************************
+     * بوصلة الأستاذ v4.4 (Build 17) — النسخة المطابقة 100% لنسخة الأندرويد الأصلية
+     *************************************************************************/
+    const APP_VERSION_NAME = "4.4";
+    const APP_VERSION_CODE = 17;
+    const STORAGE_KEY = "waad_bousala_v44_state";
+
+    const DEFAULT_STRUCTURE = [
+      {
+        id: "prep",
+        name: "الإعدادية",
+        stages: [
+          { id: "p4", name: "الرابع الإعدادي", maxGrade: 100, subjects: ["الرياضيات", "اللغة العربية", "اللغة الإنكليزية", "الفيزياء", "الكيمياء", "الأحياء", "الحاسوب"], sections: ["أ", "ب", "ج"] },
+          { id: "p5", name: "الخامس الإعدادي", maxGrade: 100, subjects: ["الرياضيات", "اللغة العربية", "اللغة الإنكليزية", "الفيزياء", "الكيمياء", "الأحياء", "الحاسوب"], sections: ["أ", "ب", "ج"] },
+          { id: "p6", name: "السادس الإعدادي", maxGrade: 100, subjects: ["الرياضيات", "اللغة العربية", "اللغة الإنكليزية", "الفيزياء", "الكيمياء", "الأحياء"], sections: ["أ", "ب", "ج"] }
+        ]
+      },
+      {
+        id: "mid",
+        name: "المتوسطة",
+        stages: [
+          { id: "m1", name: "الأول المتوسط", maxGrade: 100, subjects: ["الرياضيات", "اللغة العربية", "اللغة الإنكليزية", "العلوم", "الاجتماعيات", "التربية الإسلامية", "الحاسوب"], sections: ["أ", "ب", "ج"] },
+          { id: "m2", name: "الثاني المتوسط", maxGrade: 100, subjects: ["الرياضيات", "اللغة العربية", "اللغة الإنكليزية", "العلوم", "الاجتماعيات", "التربية الإسلامية", "الحاسوب"], sections: ["أ", "ب", "ج"] },
+          { id: "m3", name: "الثالث المتوسط", maxGrade: 100, subjects: ["الرياضيات", "اللغة العربية", "اللغة الإنكليزية", "الفيزياء", "الكيمياء", "الأحياء", "الاجتماعيات"], sections: ["أ", "ب"] }
+        ]
+      },
+      {
+        id: "prim",
+        name: "الابتدائية",
+        stages: [
+          { id: "pr1", name: "الأول الابتدائي", maxGrade: 10, subjects: ["القراءة", "الرياضيات", "العلوم", "التربية الإسلامية"], sections: ["أ", "ب"] },
+          { id: "pr2", name: "الثاني الابتدائي", maxGrade: 10, subjects: ["القراءة", "الرياضيات", "العلوم", "التربية الإسلامية"], sections: ["أ", "ب"] },
+          { id: "pr3", name: "الثالث الابتدائي", maxGrade: 10, subjects: ["القراءة", "الرياضيات", "العلوم", "التربية الإسلامية"], sections: ["أ", "ب"] },
+          { id: "pr4", name: "الرابع الابتدائي", maxGrade: 10, subjects: ["اللغة العربية", "الرياضيات", "العلوم", "الاجتماعيات", "اللغة الإنكليزية"], sections: ["أ", "ب"] },
+          { id: "pr5", name: "الخامس الابتدائي", maxGrade: 100, subjects: ["اللغة العربية", "الرياضيات", "العلوم", "الاجتماعيات", "اللغة الإنكليزية"], sections: ["أ", "ب"] },
+          { id: "pr6", name: "السادس الابتدائي", maxGrade: 100, subjects: ["اللغة العربية", "الرياضيات", "العلوم", "الاجتماعيات", "اللغة الإنكليزية"], sections: ["أ", "ب"] }
+        ]
+      }
+    ];
+
+    const DEFAULT_LESSON_TIMES = {
+      1: { start: "08:00", end: "08:45" },
+      2: { start: "08:50", end: "09:35" },
+      3: { start: "09:40", end: "10:25" },
+      4: { start: "10:40", end: "11:25" },
+      5: { start: "11:30", end: "12:15" },
+      6: { start: "12:20", end: "13:05" }
+    };
+
+    const DAYS = [
+      { id: 0, name: "الأحد" },
+      { id: 1, name: "الإثنين" },
+      { id: 2, name: "الثلاثاء" },
+      { id: 3, name: "الأربعاء" },
+      { id: 4, name: "الخميس" }
+    ];
+
+    const BEHAVIOR_TAGS = ["مميز ⭐", "متفوق 🏆", "يحتاج متابعة ⚠️", "مشاغب 🛑", "غير متفاعل 💤"];
+
+    function todayIso() {
+      const d = new Date();
+      const y = d.getFullYear();
+      const m = String(d.getMonth() + 1).padStart(2, "0");
+      const day = String(d.getDate()).padStart(2, "0");
+      return `${y}-${m}-${day}`;
+    }
+
+    function getPastDates(count) {
+      const list = [];
+      const base = new Date();
+      const dayNames = ["الأحد", "الإثنين", "الثلاثاء", "الأربعاء", "الخميس", "الجمعة", "السبت"];
+      for (let i = 0; i < count; i++) {
+        const d = new Date(base);
+        d.setDate(base.getDate() - i);
+        const y = d.getFullYear();
+        const m = String(d.getMonth() + 1).padStart(2, "0");
+        const day = String(d.getDate()).padStart(2, "0");
+        const iso = `${y}-${m}-${day}`;
+        const label = i === 0 ? "اليوم" : i === 1 ? "أمس" : dayNames[d.getDay()];
+        list.push({ iso, label, shortDate: `${m}/${day}` });
+      }
+      return list;
+    }
+
+    // Default initial state
+    let state = {
+      darkMode: true,
+      view: "dashboard",
+      activeSettingsTab: "school", // "school" | "app"
+      structure: JSON.parse(JSON.stringify(DEFAULT_STRUCTURE)),
+      globalDept: "prep",
+      globalStage: "p4",
+      globalSec: "",
+      globalSub: "الرياضيات",
+      searchQuery: "",
+      students: [
+        { id: "std_1", name: "أحمد محمد علي حسن", phone: "07701234567", dept: "prep", stage: "p4", section: "أ", behaviorTags: ["مميز ⭐"], isIntisab: false },
+        { id: "std_2", name: "حسين علي كاظم جاسم", phone: "07801112233", dept: "prep", stage: "p4", section: "أ", behaviorTags: ["متفوق 🏆"], isIntisab: false },
+        { id: "std_3", name: "زيد عبد الله محمود", phone: "07719988776", dept: "prep", stage: "p4", section: "ب", behaviorTags: [], isIntisab: true }
+      ],
+      grades: {
+        "std_1_الرياضيات": { v1: "25", v2: "25", v3: "38", v4: "24", v5: "24", v6: "36", mid: "85", v7: "25", v8: "25", v9: "40", v10: "25", v11: "25", v12: "38", final: "90", qarar: 0, bonus: 2, secondRound: "" },
+        "std_2_الرياضيات": { v1: "28", v2: "27", v3: "40", v4: "26", v5: "27", v6: "41", mid: "94", v7: "28", v8: "27", v9: "40", v10: "29", v11: "28", v12: "40", final: "96", qarar: 0, bonus: 3, secondRound: "" }
+      },
+      attendance: {},
+      attendanceDate: todayIso(),
+      attendanceFilter: "all", // "all" | "absent" | "excused" | "intisab" | "warned"
+      attendanceSearch: "",
+      rollCallActive: false,
+      rollCallIdx: 0,
+      missingHomework: {},
+      sectionNotes: {},
+      // Schedule starts empty/vacant on first open!
+      schedule: {},
+      scheduleNotificationsEnabled: true,
+      scheduleNotifyLeadMinutes: 5,
+      scheduleViewMode: "timeline", // "timeline" | "matrix"
+      selectedScheduleDay: (new Date().getDay() <= 4 ? new Date().getDay() : 0),
+      settings: {
+        ministryName: "وزارة التربية العراقية",
+        schoolName: "إعدادية التفوق للبنين",
+        teacherName: "الأستاذ وعد مجيد",
+        academicYear: "2025 - 2026"
+      },
+      savedPin: "",
+      isLocked: false,
+      isActivated: false,
+      installTimestamp: Date.now(),
+      deviceId: "IOS-" + Math.random().toString(36).substring(2, 8).toUpperCase(),
+      // UI transient state
+      isMultiSelectMode: false,
+      selectedStudentIds: [],
+      entryMode: "single", // "single" | "bulk"
+      singleEntryIntisab: false,
+      isStructureDeleteMode: false,
+      // Speed grading state
+      speedConfig: {
+        activeIndex: 0,
+        activeTab: "m1", // "m1" | "m2" | "mid" | "m3" | "m4" | "final" | "secondRound"
+        activeSubFieldIdx: 0, // 0: daily, 1: prac, 2: writ
+        autoAdvance: true,
+        freshSelection: true
+      },
+      // Official Print Studio state
+      printConfig: {
+        templateType: "annual", // "annual" | "monthly" | "attendance" | "blank_roster"
+        monthKey: "m1",
+        colorTheme: true,
+        isLandscape: true,
+        showSignatures: true,
+        showSupervisorSign: false,
+        blankColumnsCount: 8,
+        sortOrder: "alpha", // "alpha" | "top_score" | "passed_only" | "failed_only"
+        panelExpanded: true
+      },
+      acknowledgedOta: {
+        id: "",
+        versionName: "4.4",
+        versionCode: 17
+      },
+      pendingOtaPayload: null
+    };
+
+    function loadState() {
+      try {
+        const raw = localStorage.getItem(STORAGE_KEY);
+        if (raw) {
+          const parsed = JSON.parse(raw);
+          state = Object.assign({}, state, parsed);
+          state.attendanceDate = state.attendanceDate || todayIso();
+          if (state.savedPin && state.savedPin.length > 0) {
+            state.isLocked = true;
+          }
+        }
+      } catch (e) {
+        console.error("Failed to load state:", e);
+      }
+      applyTheme();
+    }
+
+    function saveState() {
+      try {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+      } catch (e) {
+        console.error("Failed to save state:", e);
+      }
+    }
+
+    function applyTheme() {
+      if (state.darkMode) {
+        document.body.classList.remove("light-mode");
+      } else {
+        document.body.classList.add("light-mode");
+      }
+      const btn = document.getElementById("themeBtn");
+      if (btn) btn.textContent = state.darkMode ? "☀️" : "🌙";
+      updateSubscriptionBadge();
+    }
+
+    function toggleTheme() {
+      state.darkMode = !state.darkMode;
+      applyTheme();
+      saveState();
+      render();
+    }
+
+    function updateSubscriptionBadge() {
+      const btn = document.getElementById("subBadgeBtn");
+      if (!btn) return;
+      if (state.isActivated) {
+        btn.className = "hdr-btn sub-badge";
+        btn.innerHTML = "👑 النسخة السنوية";
+      } else {
+        const elapsedDays = Math.floor((Date.now() - (state.installTimestamp || Date.now())) / 86400000);
+        const rem = Math.max(0, 7 - elapsedDays);
+        btn.className = "hdr-btn trial-badge";
+        btn.innerHTML = `⏳ تجريبي (${rem}ي)`;
+      }
+    }
+
+    function showToast(msg) {
+      const el = document.getElementById("toastBar");
+      if (!el) return;
+      el.textContent = msg;
+      el.style.display = "block";
+      clearTimeout(window.__toastTimer);
+      window.__toastTimer = setTimeout(() => {
+        el.style.display = "none";
+      }, 2800);
+    }
+
+    // Helpers for Department, Stage, Subject, Section
+    function getCurrentDept() {
+      return state.structure.find(d => d.id === state.globalDept) || state.structure[0] || DEFAULT_STRUCTURE[0];
+    }
+
+    function getCurrentStage() {
+      const dept = getCurrentDept();
+      return dept.stages.find(s => s.id === state.globalStage) || dept.stages[0] || DEFAULT_STRUCTURE[0].stages[0];
+    }
+
+    function getMaxAllowedGrade() {
+      return getCurrentStage().maxGrade || 100;
+    }
+
+    function getFailThreshold() {
+      return getMaxAllowedGrade() === 10 ? 5 : 50;
+    }
+
+    function getActiveSub() {
+      const stg = getCurrentStage();
+      if (state.globalSub && stg.subjects.includes(state.globalSub)) return state.globalSub;
+      return stg.subjects[0] || "العامة";
+    }
+
+    function getFilteredStudents() {
+      const q = (state.searchQuery || "").trim().toLowerCase();
+      return state.students.filter(s => {
+        if (s.dept !== getCurrentDept().id) return false;
+        if (s.stage !== getCurrentStage().id) return false;
+        if (state.globalSec && s.section !== state.globalSec) return false;
+        if (q && !s.name.toLowerCase().includes(q)) return false;
+        return true;
+      });
+    }
+
+    // Normalize Arabic Name for Duplicate Prevention (Matching WaadViewModel.kt)
+    function normalizeArabicName(name) {
+      return (name || "")
+        .trim()
+        .replace(/\s+/g, " ")
+        .replace(/[أإآ]/g, "ا")
+        .replace(/ة/g, "ه")
+        .replace(/ى/g, "ي");
+    }
+
+    function isDuplicateStudentName(name, deptId, stageId, section, excludeId = null) {
+      const norm = normalizeArabicName(name);
+      if (!norm) return false;
+      return state.students.some(s =>
+        s.id !== excludeId &&
+        s.dept === deptId &&
+        s.stage === stageId &&
+        s.section === section &&
+        normalizeArabicName(s.name) === norm
+      );
+    }
+
+    // Grade Calculation Engine (1:1 with WaadCalculator.kt)
+    function getSubjectGrades(studentId, subject) {
+      const key = `${studentId}_${subject}`;
+      if (!state.grades[key]) {
+        state.grades[key] = {
+          v1: "", v2: "", v3: "",
+          v4: "", v5: "", v6: "",
+          mid: "",
+          v7: "", v8: "", v9: "",
+          v10: "", v11: "", v12: "",
+          final: "",
+          qarar: 0,
+          bonus: 0,
+          secondRound: ""
+        };
+      }
+      return state.grades[key];
+    }
+
+    function parseGradeInt(val) {
+      if (val === undefined || val === null || String(val).trim() === "") return null;
+      const n = parseInt(String(val).trim(), 10);
+      return isNaN(n) ? null : n;
+    }
+
+    function calculateResult(studentId, subject) {
+      const g = getSubjectGrades(studentId, subject);
+      const maxG = getMaxAllowedGrade();
+
+      const calcMonth = (d, p, w) => {
+        const vd = parseGradeInt(d);
+        const vp = parseGradeInt(p);
+        const vw = parseGradeInt(w);
+        const has = vd !== null || vp !== null || vw !== null;
+        const sum = Math.min(maxG, (vd || 0) + (vp || 0) + (vw || 0));
+        return { has, val: has ? sum : 0 };
+      };
+
+      const m1Obj = calcMonth(g.v1, g.v2, g.v3);
+      const m2Obj = calcMonth(g.v4, g.v5, g.v6);
+      const m3Obj = calcMonth(g.v7, g.v8, g.v9);
+      const m4Obj = calcMonth(g.v10, g.v11, g.v12);
+
+      const hasAvg1 = m1Obj.has || m2Obj.has;
+      const avg1 = hasAvg1
+        ? Math.round(((m1Obj.val + m2Obj.val) / ((m1Obj.has ? 1 : 0) + (m2Obj.has ? 1 : 0))))
+        : 0;
+
+      const hasAvg2 = m3Obj.has || m4Obj.has;
+      const avg2 = hasAvg2
+        ? Math.round(((m3Obj.val + m4Obj.val) / ((m3Obj.has ? 1 : 0) + (m4Obj.has ? 1 : 0))))
+        : 0;
+
+      const midVal = parseGradeInt(g.mid);
+      const hasMid = midVal !== null;
+      const mid = hasMid ? Math.min(maxG, midVal) : 0;
+
+      const parts = [];
+      if (hasAvg1) parts.push(avg1);
+      if (hasMid) parts.push(mid);
+      if (hasAvg2) parts.push(avg2);
+
+      const hasSaei = parts.length > 0;
+      const rawSaei = hasSaei ? Math.round(parts.reduce((a, b) => a + b, 0) / parts.length) : 0;
+      const bonus = parseInt(g.bonus || 0, 10) || 0;
+      const qarar = parseInt(g.qarar || 0, 10) || 0;
+      const saei = hasSaei ? Math.min(maxG, rawSaei + bonus) : 0;
+
+      const isExempt = maxG === 100 && hasSaei && saei >= 90;
+
+      const finalVal = parseGradeInt(g.final);
+      const hasFinal = finalVal !== null;
+      const finalExam = hasFinal ? Math.min(maxG, finalVal) : 0;
+
+      const effectiveSaei = Math.min(maxG, saei + qarar);
+      const hasFinalResult = isExempt || (hasSaei && hasFinal);
+      const finalResult = isExempt
+        ? effectiveSaei
+        : (hasSaei && hasFinal ? Math.min(maxG, Math.round((effectiveSaei + finalExam) / 2)) : effectiveSaei);
+
+      const srVal = parseGradeInt(g.secondRound);
+      const hasSecondRound = srVal !== null;
+      const secondRoundExam = hasSecondRound ? Math.min(maxG, srVal) : 0;
+      const secondRoundResult = hasSecondRound
+        ? (hasSaei ? Math.min(maxG, Math.round((effectiveSaei + secondRoundExam) / 2)) : secondRoundExam)
+        : null;
+
+      return {
+        hasM1: m1Obj.has, m1: m1Obj.val,
+        hasM2: m2Obj.has, m2: m2Obj.val,
+        hasAvg1, avg1,
+        hasMid, mid,
+        hasM3: m3Obj.has, m3: m3Obj.val,
+        hasM4: m4Obj.has, m4: m4Obj.val,
+        hasAvg2, avg2,
+        hasSaei, saei,
+        bonus, qarar,
+        isExempt,
+        hasFinal, finalExam,
+        hasFinalResult, finalResult,
+        hasSecondRound, secondRoundExam, secondRoundResult
+      };
+    }
+
+    function calculateStats(studentsList) {
+      const sub = getActiveSub();
+      const failThresh = getFailThreshold();
+      const maxG = getMaxAllowedGrade();
+      let activeCount = 0;
+      let passed = 0;
+      let failed = 0;
+
+      studentsList.forEach(s => {
+        const res = calculateResult(s.id, sub);
+        if (res.hasSaei) {
+          activeCount++;
+          const effSaei = Math.min(maxG, res.saei + res.qarar);
+          const finalScore = res.secondRoundResult !== null
+            ? res.secondRoundResult
+            : (res.hasFinalResult ? res.finalResult : effSaei);
+          if (finalScore >= failThresh) passed++;
+          else failed++;
+        }
+      });
+
+      const rate = activeCount > 0 ? Math.round((passed * 100) / activeCount) : 0;
+      return { total: studentsList.length, activeCount, passed, failed, rate };
+    }
+
+    // Navigation & Settings Tabs
+    function switchView(viewName) {
+      state.view = viewName;
+      ["dashboard", "students", "add", "attendance", "schedule"].forEach(v => {
+        const btn = document.getElementById("nav_" + v);
+        if (btn) btn.className = "nav-item" + (v === viewName ? " active" : "");
+      });
+      const schBtn = document.getElementById("hdrSchoolSettingsBtn");
+      const appBtn = document.getElementById("hdrAppSettingsBtn");
+      if (schBtn) schBtn.classList.remove("active-tab");
+      if (appBtn) appBtn.classList.remove("active-tab");
+      saveState();
+      render();
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+
+    function openSettingsTab(tabKey) {
+      state.view = "settings";
+      state.activeSettingsTab = tabKey;
+      ["dashboard", "students", "add", "attendance", "schedule"].forEach(v => {
+        const btn = document.getElementById("nav_" + v);
+        if (btn) btn.className = "nav-item";
+      });
+      const schBtn = document.getElementById("hdrSchoolSettingsBtn");
+      const appBtn = document.getElementById("hdrAppSettingsBtn");
+      if (schBtn) schBtn.className = "hdr-btn" + (tabKey === "school" ? " active-tab" : "");
+      if (appBtn) appBtn.className = "hdr-btn" + (tabKey === "app" ? " active-tab" : "");
+      saveState();
+      render();
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+
+    // Live Lesson Detector
+    function parseMinutes(hhmm) {
+      if (!hhmm || !hhmm.includes(":")) return null;
+      const [h, m] = hhmm.split(":").map(n => parseInt(n, 10));
+      if (isNaN(h) || isNaN(m)) return null;
+      return h * 60 + m;
+    }
+
+    function getLiveLessonStatus() {
+      const now = new Date();
+      const jsDay = now.getDay(); // 0=Sun..4=Thu
+      const curMins = now.getHours() * 60 + now.getMinutes();
+      if (jsDay > 4) return { active: null, next: null, dayName: "عطلة نهاية الأسبوع" };
+
+      const dayName = DAYS.find(d => d.id === jsDay)?.name || "اليوم";
+      let active = null;
+      let next = null;
+
+      for (let slot = 1; slot <= 6; slot++) {
+        const item = state.schedule[`${jsDay}_${slot}`];
+        if (!item) continue;
+        const st = parseMinutes(item.startTime || DEFAULT_LESSON_TIMES[slot].start);
+        const en = parseMinutes(item.endTime || DEFAULT_LESSON_TIMES[slot].end);
+        if (st !== null && en !== null) {
+          if (curMins >= st && curMins <= en) {
+            active = { slot, item, remMins: en - curMins };
+            break;
+          } else if (curMins < st && !next) {
+            next = { slot, item, inMins: st - curMins };
+          }
+        }
+      }
+      return { active, next, dayName };
+    }
+
+    // Scope Selectors Strip
+    function renderScopeSelectsHtml() {
+      const dept = getCurrentDept();
+      const stage = getCurrentStage();
+      const activeSub = getActiveSub();
+
+      return `
+        <div class="card" style="padding:12px;">
+          <div class="grid-3" style="margin-bottom:8px;">
+            <div>
+              <label class="label-sm">المرحلة الدراسية</label>
+              <select class="select" onchange="onChangeDept(this.value)">
+                ${state.structure.map(d => `<option value="${d.id}" ${d.id === dept.id ? "selected" : ""}>${d.name}</option>`).join("")}
+              </select>
+            </div>
+            <div>
+              <label class="label-sm">الصف الدراسي</label>
+              <select class="select" onchange="onChangeStage(this.value)">
+                ${dept.stages.map(s => `<option value="${s.id}" ${s.id === stage.id ? "selected" : ""}>${s.name}</option>`).join("")}
+              </select>
+            </div>
+            <div>
+              <label class="label-sm">الشعبة</label>
+              <select class="select" onchange="onChangeSec(this.value)">
+                <option value="" ${state.globalSec === "" ? "selected" : ""}>الكل (${stage.sections.join("، ")})</option>
+                ${stage.sections.map(sec => `<option value="${sec}" ${state.globalSec === sec ? "selected" : ""}>شعبة (${sec})</option>`).join("")}
+              </select>
+            </div>
+          </div>
+          <div class="scroll-row">
+            <span style="font-size:11px;font-weight:900;color:var(--text-muted);margin-left:4px;">📚 المادة:</span>
+            ${stage.subjects.map(sub => `
+              <button class="chip ${sub === activeSub ? "active" : ""}" onclick="onChangeSub('${sub}')">${sub}</button>
+            `).join("")}
+            <span class="badge" style="margin-right:auto;background:rgba(99,102,241,0.14);color:var(--indigo-400);border:1px solid rgba(99,102,241,0.3);">
+              نظام الدرجة: من ${stage.maxGrade || 100}
+            </span>
+          </div>
+        </div>
+      `;
+    }
+
+    function onChangeDept(deptId) {
+      state.globalDept = deptId;
+      const d = getCurrentDept();
+      state.globalStage = d.stages[0]?.id || "";
+      state.globalSec = "";
+      state.globalSub = getCurrentStage().subjects[0] || "";
+      saveState();
+      render();
+    }
+
+    function onChangeStage(stageId) {
+      state.globalStage = stageId;
+      state.globalSec = "";
+      state.globalSub = getCurrentStage().subjects[0] || "";
+      saveState();
+      render();
+    }
+
+    function onChangeSec(sec) {
+      state.globalSec = sec;
+      saveState();
+      render();
+    }
+
+    function onChangeSub(sub) {
+      state.globalSub = sub;
+      saveState();
+      render();
+    }
+
+    /*************************************************************************
+     * 1. DASHBOARD VIEW (1:1 Match with DashboardScreen.kt)
+     *************************************************************************/
+    function renderDashboardView() {
+      const dept = getCurrentDept();
+      const stage = getCurrentStage();
+      const activeSub = getActiveSub();
+      const filtered = getFilteredStudents();
+      const stats = calculateStats(filtered);
+      const live = getLiveLessonStatus();
+      const nowTime = new Date().toLocaleTimeString("ar-IQ", { hour: "2-digit", minute: "2-digit" });
+
+      let liveRadarContent = "";
+      if (live.active) {
+        const it = live.active.item;
+        const noteKey = `${it.deptId}_${it.stageId}_${it.section}_${it.subject}`;
+        const secNote = state.sectionNotes[noteKey] || {};
+        liveRadarContent = `
+          <div style="background:rgba(16,185,129,0.16);border:1px solid rgba(16,185,129,0.45);border-radius:14px;padding:12px;margin-top:10px;">
+            <div class="row-between">
+              <span class="badge badge-pass">🟢 الحصة الجارية الآن (${live.active.slot})</span>
+              <span style="font-size:11px;font-weight:800;color:#A7F3D0;">متبقي ${live.active.remMins} دقيقة</span>
+            </div>
+            <div style="font-size:15px;font-weight:900;margin-top:6px;">
+              ${it.stageName} — شعبة (${it.section}) • ${it.subject}
+            </div>
+            ${(secNote.topic || secNote.homework) ? `
+              <div style="font-size:11px;color:#E2E8F0;margin-top:6px;background:rgba(15,23,42,0.5);padding:8px;border-radius:10px;">
+                ${secNote.topic ? `<div>📌 <b>واصلين بالمنهج:</b> ${secNote.topic}</div>` : ""}
+                ${secNote.homework ? `<div style="margin-top:2px;">📝 <b>الواجب:</b> ${secNote.homework}</div>` : ""}
+              </div>
+            ` : ""}
+            <button class="btn btn-emerald" style="width:100%;margin-top:8px;padding:8px;" onclick="jumpToLessonScope('${it.deptId}','${it.stageId}','${it.section}','${it.subject}')">
+              🚀 انتقال مباشر لطلاب الشعبة الآن
+            </button>
+          </div>
+        `;
+      } else if (live.next) {
+        const it = live.next.item;
+        liveRadarContent = `
+          <div style="background:rgba(245,158,11,0.15);border:1px solid rgba(245,158,11,0.4);border-radius:14px;padding:10px;margin-top:10px;">
+            <div class="row-between">
+              <span class="badge badge-warn">⏳ الحصة القادمة (${live.next.slot})</span>
+              <span style="font-size:11px;font-weight:800;color:#FDE68A;">تبدأ بعد ${live.next.inMins} د (${it.startTime})</span>
+            </div>
+            <div style="font-size:13px;font-weight:900;margin-top:4px;">
+              ${it.stageName} — شعبة (${it.section}) • ${it.subject}
+            </div>
+          </div>
+        `;
+      } else {
+        liveRadarContent = `
+          <div style="background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.12);border-radius:14px;padding:10px;margin-top:10px;" class="row-between">
+            <span style="font-size:12px;font-weight:800;color:#CBD5E1;">✨ لا توجد حصة دراسية نشطة في هذه اللحظة</span>
+            <button class="btn btn-indigo" style="padding:6px 10px;font-size:11px;" onclick="switchView('schedule')">إدارة الجدول ⏰</button>
+          </div>
+        `;
+      }
+
+      return `
+        <!-- Live Radar Hero Banner -->
+        <div class="hero-card">
+          <div class="row-between">
+            <div>
+              <div style="font-size:11px;font-weight:800;color:#A5B4FC;">🏫 ${state.settings.schoolName} • ${state.settings.academicYear}</div>
+              <div style="font-size:17px;font-weight:900;margin-top:2px;">مرحباً بك، ${state.settings.teacherName} 👋</div>
+            </div>
+            <div style="text-align:left;background:rgba(15,23,42,0.55);padding:6px 10px;border-radius:12px;border:1px solid rgba(129,140,248,0.3);">
+              <div style="font-size:10px;font-weight:800;color:#C7D2FE;">${live.dayName}</div>
+              <div style="font-size:13px;font-weight:900;color:#fff;">${nowTime}</div>
+            </div>
+          </div>
+          ${liveRadarContent}
+        </div>
+
+        <!-- Scope Selector Card -->
+        ${renderScopeSelectsHtml()}
+
+        <!-- 2x2 Stats Cards with Icons -->
+        <div class="grid-2">
+          <div class="card" style="display:flex;align-items:center;gap:12px;">
+            <div style="width:44px;height:44px;border-radius:14px;background:rgba(99,102,241,0.16);display:flex;align-items:center;justify-content:center;font-size:22px;">👥</div>
+            <div>
+              <div style="font-size:11px;font-weight:800;color:var(--text-muted);">العدد الكلي للطلاب</div>
+              <div style="font-size:22px;font-weight:900;color:var(--indigo-400);">${stats.total}</div>
+            </div>
+          </div>
+          <div class="card" style="display:flex;align-items:center;gap:12px;">
+            <div style="width:44px;height:44px;border-radius:14px;background:rgba(16,185,129,0.16);display:flex;align-items:center;justify-content:center;font-size:22px;">📈</div>
+            <div>
+              <div style="font-size:11px;font-weight:800;color:var(--text-muted);">نسبة النجاح</div>
+              <div style="font-size:22px;font-weight:900;color:${stats.rate >= 50 ? "var(--emerald-500)" : "var(--rose-500)"};">${stats.rate}%</div>
+            </div>
+          </div>
+          <div class="card" style="display:flex;align-items:center;gap:12px;">
+            <div style="width:44px;height:44px;border-radius:14px;background:rgba(16,185,129,0.16);display:flex;align-items:center;justify-content:center;font-size:22px;">✅</div>
+            <div>
+              <div style="font-size:11px;font-weight:800;color:var(--text-muted);">الناجحون</div>
+              <div style="font-size:22px;font-weight:900;color:var(--emerald-500);">${stats.passed}</div>
+            </div>
+          </div>
+          <div class="card" style="display:flex;align-items:center;gap:12px;">
+            <div style="width:44px;height:44px;border-radius:14px;background:rgba(244,63,94,0.16);display:flex;align-items:center;justify-content:center;font-size:22px;">⚠️</div>
+            <div>
+              <div style="font-size:11px;font-weight:800;color:var(--text-muted);">المكملون / الراسبون</div>
+              <div style="font-size:22px;font-weight:900;color:var(--rose-500);">${stats.failed}</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Classroom Interactive Tools: Random Picker & Top Students Certificates -->
+        <div class="grid-2">
+          <button class="btn btn-purple" style="height:50px;font-size:13px;" onclick="openRandomPickerModal()">
+            🎲 القرعة العشوائية
+          </button>
+          <button class="btn btn-amber" style="height:50px;font-size:13px;" onclick="openTopCertificatesModal()">
+            🏆 شهادات التفوق
+          </button>
+        </div>
+
+        <!-- Speed Grading, Print Studio & Excel Command Card -->
+        <div class="card">
+          <div class="row-between" style="margin-bottom:10px;">
+            <div>
+              <div style="font-size:14px;font-weight:900;">⚡ مركز الرصد السريع والطباعة الرسمية</div>
+              <div style="font-size:11px;font-weight:700;color:var(--text-muted);">${dept.name} • ${stage.name} • مادة ${activeSub}</div>
+            </div>
+          </div>
+          <button class="btn btn-indigo" style="width:100%;height:48px;font-size:14px;margin-bottom:8px;" onclick="openSpeedGrading(0)">
+            🎙️⚡ فتح استوديو الرصد السريع (صوتي + لوحة أرقام ذكية)
+          </button>
+          <div class="grid-2">
+            <button class="btn btn-teal" style="height:44px;" onclick="openPrintStudio('annual')">
+              🖨️ استوديو الطباعة والتقارير
+            </button>
+            <button class="btn btn-emerald" style="height:44px;" onclick="exportExcelCsv()">
+              📊 تصدير سجل Excel
+            </button>
+          </div>
+        </div>
+      `;
+    }
+
+    function jumpToLessonScope(deptId, stageId, section, subject) {
+      state.globalDept = deptId;
+      state.globalStage = stageId;
+      state.globalSec = section;
+      state.globalSub = subject;
+      switchView("students");
+      showToast(`تم الانتقال إلى ${getCurrentStage().name} - شعبة (${section})`);
+    }
+
+    /*************************************************************************
+     * 2. STUDENTS LIST VIEW (1:1 Match with StudentListAndEntryScreen.kt)
+     *************************************************************************/
+    function renderStudentsView() {
+      const dept = getCurrentDept();
+      const stage = getCurrentStage();
+      const activeSub = getActiveSub();
+      const filtered = getFilteredStudents();
+      const maxG = getMaxAllowedGrade();
+      const failThresh = getFailThreshold();
+
+      // Section curriculum & homework card when a specific section is active
+      const activeSec = state.globalSec || stage.sections[0] || "أ";
+      const noteKey = `${dept.id}_${stage.id}_${activeSec}_${activeSub}`;
+      const secNote = state.sectionNotes[noteKey] || { topic: "", homework: "" };
+
+      return `
+        ${renderScopeSelectsHtml()}
+
+        <!-- Section Curriculum & Homework Tracker Card -->
+        <div class="card" style="border-color:rgba(99,102,241,0.4);">
+          <div class="row-between" style="margin-bottom:8px;">
+            <span style="font-size:13px;font-weight:900;color:var(--indigo-400);">📌 متابعة المنهج والواجب — شعبة (${activeSec}) • ${activeSub}</span>
+            <button class="btn btn-indigo" style="padding:5px 10px;font-size:11px;" onclick="saveSectionNote('${noteKey}')">حفظ الملاحظة 💾</button>
+          </div>
+          <div class="grid-2">
+            <div>
+              <label class="label-sm">📖 أين وصلنا في المنهج؟</label>
+              <input id="secTopicInput" class="input" placeholder="مثال: الفصل الثاني ص45..." value="${escapeHtml(secNote.topic || "")}" />
+            </div>
+            <div>
+              <label class="label-sm">📝 الواجب البيتي القادم</label>
+              <input id="secHwInput" class="input" placeholder="مثال: حل تمارين (2-1)..." value="${escapeHtml(secNote.homework || "")}" />
+            </div>
+          </div>
+        </div>
+
+        <!-- Search & Multi-Select Bulk Delete Toolbar -->
+        <div class="card" style="padding:12px;">
+          <div class="row-between" style="gap:8px;margin-bottom:10px;">
+            <input class="input" placeholder="🔍 ابحث عن اسم طالب..." value="${escapeHtml(state.searchQuery)}" oninput="state.searchQuery=this.value;render();" />
+            <button class="btn btn-indigo" style="white-space:nowrap;height:40px;" onclick="openSpeedGrading(0)">⚡ رصد سريع</button>
+          </div>
+
+          <!-- Multi-selection & Bulk Delete Bar -->
+          <div class="row-between" style="flex-wrap:wrap;gap:6px;padding-top:8px;border-top:1px solid var(--border-color);">
+            <button class="chip ${state.isMultiSelectMode ? "active-rose" : ""}" onclick="toggleMultiSelectMode()">
+              ${state.isMultiSelectMode ? "✕ إلغاء وضع التحديد" : "☑️ تحديد أسماء للحذف"}
+            </button>
+            ${state.isMultiSelectMode ? `
+              <div class="row-wrap">
+                <button class="chip" onclick="selectAllFilteredStudents()">تحديد الكل (${filtered.length})</button>
+                <button class="btn btn-rose" style="padding:6px 12px;font-size:11px;" onclick="confirmDeleteSelectedStudents()">
+                  🗑️ حذف المحددين نهائياً (${state.selectedStudentIds.length})
+                </button>
+              </div>
+            ` : `
+              <span style="font-size:11px;font-weight:800;color:var(--text-muted);">إجمالي القائمة: ${filtered.length} طالب</span>
+            `}
+          </div>
+        </div>
+
+        <!-- Students List -->
+        ${filtered.length === 0 ? `
+          <div class="card" style="text-align:center;padding:32px 16px;">
+            <div style="font-size:36px;margin-bottom:8px;">📭</div>
+            <div style="font-size:15px;font-weight:900;">لا يوجد طلاب في هذا الصف / الشعبة حالياً</div>
+            <p style="font-size:12px;color:var(--text-muted);margin:6px 0 14px;">يمكنك إضافة طلاب جدد فردياً أو استيراد قائمة أسماء كاملة.</p>
+            <button class="btn btn-indigo" onclick="switchView('add')">➕ إضافة طلاب الآن</button>
+          </div>
+        ` : filtered.map((std, idx) => {
+          const res = calculateResult(std.id, activeSub);
+          const effSaei = Math.min(maxG, res.saei + res.qarar);
+          const finalScore = res.secondRoundResult !== null
+            ? res.secondRoundResult
+            : (res.hasFinalResult ? res.finalResult : effSaei);
+          const isPass = finalScore >= failThresh;
+          const hwMiss = state.missingHomework[`${std.id}_${activeSub}`] || 0;
+          const isSelected = state.selectedStudentIds.includes(std.id);
+
+          return `
+            <div class="card" style="border-color:${std.isIntisab ? "rgba(192,132,252,0.5)" : isSelected ? "var(--rose-500)" : "var(--border-color)"};">
+              <div class="row-between" style="align-items:flex-start;">
+                <div style="display:flex;align-items:flex-start;gap:10px;flex:1;">
+                  ${state.isMultiSelectMode ? `
+                    <input type="checkbox" ${isSelected ? "checked" : ""} onchange="toggleSelectStudent('${std.id}')" style="width:20px;height:20px;margin-top:4px;accent-color:#E11D48;" />
+                  ` : `
+                    <div style="width:32px;height:32px;border-radius:10px;background:var(--bg-sub);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:900;color:var(--indigo-400);flex-shrink:0;">
+                      ${idx + 1}
+                    </div>
+                  `}
+                  <div style="flex:1;">
+                    <div class="row-wrap" style="gap:6px;">
+                      <span style="font-size:15px;font-weight:900;cursor:pointer;" onclick="openStudentProfileModal('${std.id}')">${escapeHtml(std.name)}</span>
+                      <span class="badge" style="background:var(--bg-sub);color:var(--text-muted);">شعبة ${std.section}</span>
+                      ${std.isIntisab ? `<span class="badge badge-intosab">🏠 انتساب</span>` : ""}
+                      ${res.bonus > 0 ? `<span class="badge badge-warn">⭐ +${res.bonus}</span>` : ""}
+                      ${hwMiss > 0 ? `<span class="badge badge-fail">📚 نقص واجب: ${hwMiss}</span>` : ""}
+                    </div>
+                    ${(std.behaviorTags && std.behaviorTags.length > 0) ? `
+                      <div class="row-wrap" style="margin-top:5px;">
+                        ${std.behaviorTags.map(t => `<span class="badge" style="background:rgba(99,102,241,0.14);color:var(--indigo-400);">${t}</span>`).join("")}
+                      </div>
+                    ` : ""}
+                  </div>
+                </div>
+
+                <!-- Calculated Score Summary Pill -->
+                <div style="text-align:left;flex-shrink:0;">
+                  ${res.isExempt ? `
+                    <span class="badge badge-pass" style="font-size:11px;">✨ معفي (${effSaei})</span>
+                  ` : res.hasSaei ? `
+                    <span class="badge ${isPass ? "badge-pass" : "badge-fail"}" style="font-size:11px;">
+                      السعي: ${effSaei} ${res.hasFinalResult ? `| النهائي: ${finalScore}` : ""}
+                    </span>
+                  ` : `
+                    <span class="badge" style="background:var(--bg-sub);color:var(--text-muted);">لم يرصد</span>
+                  `}
+                </div>
+              </div>
+
+              <!-- Quick Monthly & Exam Summary Strip -->
+              <div class="grid-5" style="margin-top:10px;background:var(--bg-sub);padding:8px;border-radius:12px;text-align:center;font-size:10px;font-weight:800;">
+                <div><div style="color:var(--text-muted);">معدل ف1</div><div style="font-size:12px;font-weight:900;">${res.hasAvg1 ? res.avg1 : "-"}</div></div>
+                <div><div style="color:var(--text-muted);">نصف السنة</div><div style="font-size:12px;font-weight:900;">${res.hasMid ? res.mid : "-"}</div></div>
+                <div><div style="color:var(--text-muted);">معدل ف2</div><div style="font-size:12px;font-weight:900;">${res.hasAvg2 ? res.avg2 : "-"}</div></div>
+                <div><div style="color:var(--text-muted);">السعي</div><div style="font-size:12px;font-weight:900;color:var(--indigo-400);">${res.hasSaei ? effSaei : "-"}</div></div>
+                <div><div style="color:var(--text-muted);">النهائي</div><div style="font-size:12px;font-weight:900;color:${isPass ? "var(--emerald-500)" : "var(--rose-500)"};">${res.hasFinalResult ? finalScore : "-"}</div></div>
+              </div>
+
+              <!-- 5 Quick Action Buttons -->
+              <div class="scroll-row" style="margin-top:10px;padding-bottom:0;">
+                <button class="chip active" onclick="openSpeedGrading(${idx})">⚡ رصد الدرجات</button>
+                <button class="chip ${std.isIntisab ? "active-purple" : ""}" onclick="toggleStudentIntisab('${std.id}')">
+                  🏠 ${std.isIntisab ? "طالب انتساب ✓" : "تحويل انتساب"}
+                </button>
+                <button class="chip" onclick="openHomeworkModal('${std.id}')">📚 الواجبات</button>
+                <button class="chip" onclick="openBonusModal('${std.id}')">⭐ مكافأة وقرار</button>
+                <button class="chip" onclick="openStudentProfileModal('${std.id}')">👤 الملف الشامل</button>
+              </div>
+            </div>
+          `;
+        }).join("")}
+      `;
+    }
+
+    function saveSectionNote(noteKey) {
+      const topic = document.getElementById("secTopicInput")?.value || "";
+      const homework = document.getElementById("secHwInput")?.value || "";
+      state.sectionNotes[noteKey] = { topic, homework };
+      saveState();
+      showToast("تم حفظ ملاحظة المنهج والواجب للشعبة ✅");
+    }
+
+    function toggleMultiSelectMode() {
+      state.isMultiSelectMode = !state.isMultiSelectMode;
+      state.selectedStudentIds = [];
+      render();
+    }
+
+    function toggleSelectStudent(stdId) {
+      const idx = state.selectedStudentIds.indexOf(stdId);
+      if (idx >= 0) state.selectedStudentIds.splice(idx, 1);
+      else state.selectedStudentIds.push(stdId);
+      render();
+    }
+
+    function selectAllFilteredStudents() {
+      const filtered = getFilteredStudents();
+      if (state.selectedStudentIds.length === filtered.length) {
+        state.selectedStudentIds = [];
+      } else {
+        state.selectedStudentIds = filtered.map(s => s.id);
+      }
+      render();
+    }
+
+    function confirmDeleteSelectedStudents() {
+      if (state.selectedStudentIds.length === 0) {
+        showToast("يرجى تحديد طالب واحد على الأقل للحذف ⚠️");
+        return;
+      }
+      openModal(`
+        <div style="text-align:center;">
+          <div style="font-size:36px;margin-bottom:8px;">⚠️</div>
+          <h3 style="margin:0 0 6px;font-size:17px;font-weight:900;">تأكيد حذف الطلاب المحددين</h3>
+          <p style="font-size:12px;color:var(--text-muted);font-weight:700;margin-bottom:16px;">
+            هل أنت متأكد من حذف (${state.selectedStudentIds.length}) طالب نهائياً مع جميع درجاتهم وغياباتهم؟
+          </p>
+          <div class="grid-2">
+            <button class="btn btn-rose" onclick="executeBulkDeleteStudents()">نعم، حذف نهائي 🗑️</button>
+            <button class="btn btn-sub" onclick="closeModal()">إلغاء</button>
+          </div>
+        </div>
+      `);
+    }
+
+    function executeBulkDeleteStudents() {
+      const toRemove = new Set(state.selectedStudentIds);
+      state.students = state.students.filter(s => !toRemove.has(s.id));
+      state.selectedStudentIds = [];
+      state.isMultiSelectMode = false;
+      saveState();
+      closeModal();
+      render();
+      showToast("تم حذف الطلاب المحددين بنجاح 🗑️");
+    }
+
+    function toggleStudentIntisab(stdId) {
+      const s = state.students.find(x => x.id === stdId);
+      if (!s) return;
+      s.isIntisab = !s.isIntisab;
+      saveState();
+      render();
+      showToast(s.isIntisab
+        ? `تم تحويل (${s.name}) إلى نظام الانتساب 🏠 (معفي من الحضور اليومي)`
+        : `تم إعادة (${s.name}) إلى الدوام النظامي ✅`);
+    }
+
+    /*************************************************************************
+     * 3. STUDENT ENTRY VIEW (Single + Bulk + Intisab + Duplicate Prevention)
+     *************************************************************************/
+    function renderAddStudentView() {
+      const dept = getCurrentDept();
+      const stage = getCurrentStage();
+      const activeSec = state.globalSec || stage.sections[0] || "أ";
+
+      return `
+        ${renderScopeSelectsHtml()}
+
+        <div class="card">
+          <div class="grid-2" style="margin-bottom:14px;">
+            <button class="btn ${state.entryMode === "single" ? "btn-indigo" : "btn-sub"}" onclick="state.entryMode='single';render();">
+              👤 إضافة طالب مفرد
+            </button>
+            <button class="btn ${state.entryMode === "bulk" ? "btn-indigo" : "btn-sub"}" onclick="state.entryMode='bulk';render();">
+              📋 إضافة جماعية / استيراد
+            </button>
+          </div>
+
+          ${state.entryMode === "single" ? `
+            <div style="display:flex;flex-direction:column;gap:10px;">
+              <div>
+                <label class="label-sm">اسم الطالب الرباعي واللقب</label>
+                <input id="newStdName" class="input" placeholder="مثال: محمد جاسم عبد الله..." />
+              </div>
+              <div class="grid-2">
+                <div>
+                  <label class="label-sm">الشعبة</label>
+                  <select id="newStdSec" class="select">
+                    ${stage.sections.map(sec => `<option value="${sec}" ${sec === activeSec ? "selected" : ""}>شعبة (${sec})</option>`).join("")}
+                  </select>
+                </div>
+                <div>
+                  <label class="label-sm">رقم هاتف ولي الأمر (اختياري)</label>
+                  <input id="newStdPhone" class="input" inputmode="tel" placeholder="0770..." />
+                </div>
+              </div>
+
+              <!-- Intisab Toggle Card -->
+              <div style="background:rgba(168,85,247,0.12);border:1px solid rgba(192,132,252,0.45);border-radius:14px;padding:12px;cursor:pointer;" onclick="state.singleEntryIntisab=!state.singleEntryIntisab;render();" class="row-between">
+                <div>
+                  <div style="font-size:13px;font-weight:900;color:#C084FC;">🏠 طالب انتساب (معفي من الحضور اليومي)</div>
+                  <div style="font-size:11px;color:var(--text-muted);font-weight:700;">يحضر في الامتحانات فقط ولا يُسجل له حضور أو غياب يومي</div>
+                </div>
+                <input type="checkbox" ${state.singleEntryIntisab ? "checked" : ""} style="width:20px;height:20px;accent-color:#9333EA;" />
+              </div>
+
+              <button class="btn btn-emerald" style="height:46px;font-size:14px;margin-top:4px;" onclick="addSingleStudent()">
+                ➕ حفظ وإضافة الطالب للقائمة
+              </button>
+            </div>
+          ` : `
+            <div style="display:flex;flex-direction:column;gap:10px;">
+              <div class="row-between">
+                <label class="label-sm" style="margin:0;">الشعبة المستهدفة للإضافة الجماعية:</label>
+                <select id="bulkStdSec" class="select" style="width:140px;">
+                  ${stage.sections.map(sec => `<option value="${sec}" ${sec === activeSec ? "selected" : ""}>شعبة (${sec})</option>`).join("")}
+                </select>
+              </div>
+              <div>
+                <label class="label-sm">الصق قائمة أسماء الطلاب (كل اسم في سطر مستقل) — يتم منع التكرار تلقائياً:</label>
+                <textarea id="bulkNamesTextarea" class="textarea" rows="7" placeholder="أحمد علي حسين&#10;محمد قاسم جبار&#10;حيدر كاظم جواد"></textarea>
+              </div>
+              <div class="row-between" style="gap:8px;">
+                <label class="btn btn-sub" style="flex:1;cursor:pointer;">
+                  📂 استيراد ملف نصي / CSV
+                  <input type="file" accept=".txt,.csv" style="display:none;" onchange="handleImportNamesFile(event)" />
+                </label>
+                <button class="btn btn-emerald" style="flex:1.4;height:44px;" onclick="addBulkStudents()">
+                  🚀 إضافة جميع الأسماء الآن
+                </button>
+              </div>
+            </div>
+          `}
+        </div>
+      `;
+    }
+
+    function addSingleStudent() {
+      const nameEl = document.getElementById("newStdName");
+      const phoneEl = document.getElementById("newStdPhone");
+      const secEl = document.getElementById("newStdSec");
+      const rawName = (nameEl?.value || "").trim();
+      const sec = secEl?.value || "أ";
+      const deptId = getCurrentDept().id;
+      const stageId = getCurrentStage().id;
+
+      if (!rawName) {
+        showToast("يرجى كتابة اسم الطالب أولاً ⚠️");
+        return;
+      }
+      if (isDuplicateStudentName(rawName, deptId, stageId, sec)) {
+        showToast(`⚠️ الطالب (${rawName}) موجود مسبقاً في نفس الصف والشعبة!`);
+        return;
+      }
+
+      state.students.push({
+        id: "std_" + Date.now() + "_" + Math.random().toString(36).substring(2, 6),
+        name: rawName,
+        phone: (phoneEl?.value || "").trim(),
+        dept: deptId,
+        stage: stageId,
+        section: sec,
+        behaviorTags: [],
+        isIntisab: !!state.singleEntryIntisab
+      });
+      state.singleEntryIntisab = false;
+      saveState();
+      if (nameEl) nameEl.value = "";
+      if (phoneEl) phoneEl.value = "";
+      showToast(`تمت إضافة الطالب (${rawName}) بنجاح ✅`);
+      render();
+    }
+
+    function handleImportNamesFile(ev) {
+      const file = ev.target.files?.[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = () => {
+        const area = document.getElementById("bulkNamesTextarea");
+        if (area) area.value = String(reader.result || "");
+        showToast("تم تحميل الأسماء من الملف — اضغط إضافة جميع الأسماء 📂");
+      };
+      reader.readAsText(file);
+    }
+
+    function addBulkStudents() {
+      const rawText = document.getElementById("bulkNamesTextarea")?.value || "";
+      const sec = document.getElementById("bulkStdSec")?.value || "أ";
+      const deptId = getCurrentDept().id;
+      const stageId = getCurrentStage().id;
+
+      const lines = rawText
+        .split(/\r?\n/)
+        .map(l => l.replace(/^\d+[\s.\-ـ)]*/, "").trim())
+        .filter(Boolean);
+
+      if (lines.length === 0) {
+        showToast("يرجى لصق قائمة الأسماء أولاً ⚠️");
+        return;
+      }
+
+      let addedCount = 0;
+      let duplicateCount = 0;
+
+      lines.forEach(lineName => {
+        if (isDuplicateStudentName(lineName, deptId, stageId, sec)) {
+          duplicateCount++;
+        } else {
+          state.students.push({
+            id: "std_" + Date.now() + "_" + Math.random().toString(36).substring(2, 7),
+            name: lineName,
+            phone: "",
+            dept: deptId,
+            stage: stageId,
+            section: sec,
+            behaviorTags: [],
+            isIntisab: false
+          });
+          addedCount++;
+        }
+      });
+
+      saveState();
+      if (duplicateCount > 0) {
+        showToast(`تمت إضافة ${addedCount} طالب واستبعاد ${duplicateCount} اسم مكرر ✅`);
+      } else {
+        showToast(`تمت إضافة ${addedCount} طالب بنجاح ✅`);
+      }
+      switchView("students");
+    }
+
+    /*************************************************************************
+     * 4. SMART ATTENDANCE VIEW (1:1 Match with AttendanceAndScheduleScreen.kt)
+     *************************************************************************/
+    function renderAttendanceView() {
+      const dept = getCurrentDept();
+      const stage = getCurrentStage();
+      const allFiltered = getFilteredStudents();
+      const dateStr = state.attendanceDate || todayIso();
+      const past7 = getPastDates(7);
+
+      const intisabStudents = allFiltered.filter(s => s.isIntisab);
+      const regularStudents = allFiltered.filter(s => !s.isIntisab);
+
+      let presentCount = 0;
+      let absentCount = 0;
+      let excusedCount = 0;
+
+      regularStudents.forEach(s => {
+        const st = state.attendance[`${s.id}_${dateStr}`] || "present";
+        if (st === "absent") absentCount++;
+        else if (st === "excused") excusedCount++;
+        else presentCount++;
+      });
+
+      const intisabCount = intisabStudents.length;
+      const attendanceRate = regularStudents.length > 0
+        ? Math.round(((presentCount + excusedCount) * 100) / regularStudents.length)
+        : 100;
+
+      // Apply filter & search
+      const q = (state.attendanceSearch || "").trim().toLowerCase();
+      const displayedStudents = allFiltered.filter(s => {
+        if (q && !s.name.toLowerCase().includes(q)) return false;
+        const todaySt = state.attendance[`${s.id}_${dateStr}`] || "present";
+        const totalAbs = Object.keys(state.attendance).filter(k => k.startsWith(s.id + "_") && state.attendance[k] === "absent").length;
+        if (state.attendanceFilter === "absent") return !s.isIntisab && todaySt === "absent";
+        if (state.attendanceFilter === "excused") return !s.isIntisab && todaySt === "excused";
+        if (state.attendanceFilter === "intisab") return !!s.isIntisab;
+        if (state.attendanceFilter === "warned") return !s.isIntisab && totalAbs >= 3;
+        return true;
+      });
+
+      const totalBar = Math.max(1, allFiltered.length);
+      const pPct = (presentCount * 100) / totalBar;
+      const ePct = (excusedCount * 100) / totalBar;
+      const iPct = (intisabCount * 100) / totalBar;
+      const aPct = (absentCount * 100) / totalBar;
+
+      return `
+        <!-- Hero Attendance Command Center -->
+        <div class="hero-card">
+          <div class="row-between">
+            <div>
+              <div style="font-size:15px;font-weight:900;">📅 منظومة الرصد الذكي للحضور والغياب</div>
+              <div style="font-size:11px;color:#C7D2FE;font-weight:700;">${dept.name} • ${stage.name} • التاريخ: ${dateStr}</div>
+            </div>
+            <div class="row-wrap">
+              <button class="btn btn-emerald" style="padding:7px 10px;font-size:11px;" onclick="shareDailyAttendanceSummary()">📤 موقف اليوم</button>
+              <button class="btn btn-indigo" style="padding:7px 10px;font-size:11px;" onclick="openPrintStudio('attendance')">🖨️ سجل الطباعة</button>
+            </div>
+          </div>
+
+          <!-- 5 Live Stat Boxes (Present, Absent, Excused, Intisab, Rate) -->
+          <div class="grid-5" style="margin-top:12px;text-align:center;">
+            <div style="background:rgba(16,185,129,0.16);border:1px solid rgba(16,185,129,0.4);padding:8px 4px;border-radius:12px;">
+              <div style="font-size:17px;font-weight:900;color:#10B981;">${presentCount}</div>
+              <div style="font-size:10px;font-weight:800;color:#A7F3D0;">حاضر ✅</div>
+            </div>
+            <div style="background:rgba(244,63,94,0.16);border:1px solid rgba(244,63,94,0.4);padding:8px 4px;border-radius:12px;">
+              <div style="font-size:17px;font-weight:900;color:#F43F5E;">${absentCount}</div>
+              <div style="font-size:10px;font-weight:800;color:#FECDD3;">غائب ❌</div>
+            </div>
+            <div style="background:rgba(245,158,11,0.16);border:1px solid rgba(245,158,11,0.4);padding:8px 4px;border-radius:12px;">
+              <div style="font-size:17px;font-weight:900;color:#FBBF24;">${excusedCount}</div>
+              <div style="font-size:10px;font-weight:800;color:#FDE68A;">إجازة 🕒</div>
+            </div>
+            <div style="background:rgba(168,85,247,0.2);border:1px solid rgba(192,132,252,0.5);padding:8px 4px;border-radius:12px;">
+              <div style="font-size:17px;font-weight:900;color:#C084FC;">${intisabCount}</div>
+              <div style="font-size:10px;font-weight:800;color:#E9D5FF;">انتساب 🏠</div>
+            </div>
+            <div style="background:rgba(99,102,241,0.2);border:1px solid rgba(129,140,248,0.45);padding:8px 4px;border-radius:12px;">
+              <div style="font-size:17px;font-weight:900;color:#818CF8;">${attendanceRate}%</div>
+              <div style="font-size:10px;font-weight:800;color:#C7D2FE;">نسبة الدوام</div>
+            </div>
+          </div>
+
+          <!-- Multi-color Segmented Progress Bar -->
+          <div style="height:8px;width:100%;background:rgba(255,255,255,0.1);border-radius:999px;overflow:hidden;display:flex;margin-top:10px;">
+            <div style="width:${pPct}%;background:#10B981;"></div>
+            <div style="width:${ePct}%;background:#F59E0B;"></div>
+            <div style="width:${iPct}%;background:#C084FC;"></div>
+            <div style="width:${aPct}%;background:#F43F5E;"></div>
+          </div>
+        </div>
+
+        <!-- 7-Day Interactive Timeline Strip -->
+        <div class="card" style="padding:12px;">
+          <div class="row-between" style="margin-bottom:8px;">
+            <span style="font-size:12px;font-weight:900;">🗓️ شريط الأيام السريع (آخر 7 أيام)</span>
+            <div class="row-wrap">
+              ${dateStr !== todayIso() ? `<button class="chip active" onclick="state.attendanceDate=todayIso();render();">العودة لليوم ↩️</button>` : ""}
+              <input type="date" class="input" style="width:135px;padding:4px 8px;font-size:11px;" value="${dateStr}" onchange="state.attendanceDate=this.value;render();" />
+            </div>
+          </div>
+          <div class="scroll-row">
+            ${past7.map(d => {
+              const sel = d.iso === dateStr;
+              const dayAbs = regularStudents.filter(s => state.attendance[`${s.id}_${d.iso}`] === "absent").length;
+              return `
+                <button class="chip ${sel ? "active" : ""}" style="flex-direction:column;padding:7px 12px;min-width:68px;" onclick="state.attendanceDate='${d.iso}';render();">
+                  <span style="font-size:11px;font-weight:900;">${d.label}</span>
+                  <span style="font-size:10px;opacity:0.8;">${d.shortDate}</span>
+                  <span class="badge ${dayAbs > 0 ? "badge-fail" : "badge-pass"}" style="margin-top:2px;font-size:9px;">
+                    ${dayAbs > 0 ? `${dayAbs} غياب` : "مكتمل"}
+                  </span>
+                </button>
+              `;
+            }).join("")}
+          </div>
+        </div>
+
+        ${renderScopeSelectsHtml()}
+
+        <!-- Batch Actions & Interactive Roll-Call Mode -->
+        <div class="card" style="padding:12px;">
+          <div class="row-between" style="gap:8px;margin-bottom:10px;">
+            <button class="btn btn-emerald" style="flex:1;" onclick="markAllRegularPresent()">✅ الكل حاضر</button>
+            <button class="btn ${state.rollCallActive ? "btn-rose" : "btn-purple"}" style="flex:1;" onclick="toggleRollCallMode()">
+              ${state.rollCallActive ? "✕ إغلاق النداء السريع" : "🗣️ النداء السريع"}
+            </button>
+          </div>
+
+          ${state.rollCallActive && allFiltered.length > 0 ? renderRollCallCard(allFiltered, dateStr) : ""}
+
+          <input class="input" placeholder="🔍 ابحث عن طالب في سجل الحضور..." value="${escapeHtml(state.attendanceSearch)}" oninput="state.attendanceSearch=this.value;render();" style="margin-bottom:8px;" />
+
+          <!-- 5 Filter Tabs including Intisab & Warnings -->
+          <div class="scroll-row">
+            <button class="chip ${state.attendanceFilter === "all" ? "active" : ""}" onclick="state.attendanceFilter='all';render();">الكل (${allFiltered.length})</button>
+            <button class="chip ${state.attendanceFilter === "absent" ? "active-rose" : ""}" onclick="state.attendanceFilter='absent';render();">الغائبون ❌ (${absentCount})</button>
+            <button class="chip ${state.attendanceFilter === "excused" ? "active-amber" : ""}" onclick="state.attendanceFilter='excused';render();">المجازون 🕒 (${excusedCount})</button>
+            <button class="chip ${state.attendanceFilter === "intisab" ? "active-purple" : ""}" onclick="state.attendanceFilter='intisab';render();">الانتساب 🏠 (${intisabCount})</button>
+            <button class="chip ${state.attendanceFilter === "warned" ? "active-rose" : ""}" onclick="state.attendanceFilter='warned';render();">إنذارات الغياب 🚨</button>
+          </div>
+        </div>
+
+        <!-- Student Attendance Cards -->
+        ${displayedStudents.map((std, idx) => {
+          const todaySt = state.attendance[`${std.id}_${dateStr}`] || "present";
+          const totalAbs = Object.keys(state.attendance).filter(k => k.startsWith(std.id + "_") && state.attendance[k] === "absent").length;
+
+          if (std.isIntisab) {
+            return `
+              <div class="card" style="border-color:rgba(192,132,252,0.6);background:rgba(168,85,247,0.06);">
+                <div class="row-between">
+                  <div>
+                    <div class="row-wrap">
+                      <span style="font-size:15px;font-weight:900;">${escapeHtml(std.name)}</span>
+                      <span class="badge badge-intosab">🏠 طالب انتساب</span>
+                    </div>
+                    <div style="font-size:11px;font-weight:700;color:#C084FC;margin-top:4px;">
+                      معفي من الدروس اليومية — يحضر في الامتحانات فقط (لا يُكتب له حضور ولا غياب)
+                    </div>
+                  </div>
+                  <button class="chip active-purple" onclick="toggleStudentIntisab('${std.id}')">إلغاء الانتساب ↩️</button>
+                </div>
+              </div>
+            `;
+          }
+
+          return `
+            <div class="card" style="border-color:${todaySt === "absent" ? "rgba(244,63,94,0.5)" : todaySt === "excused" ? "rgba(245,158,11,0.5)" : "var(--border-color)"};">
+              <div class="row-between">
+                <div>
+                  <div class="row-wrap">
+                    <span style="font-size:15px;font-weight:900;">${idx + 1}. ${escapeHtml(std.name)}</span>
+                    <span class="badge" style="background:var(--bg-sub);color:var(--text-muted);">شعبة ${std.section}</span>
+                    ${totalAbs >= 3 ? `<span class="badge badge-fail">🚨 إنذار غياب (${totalAbs} أيام)</span>` : totalAbs > 0 ? `<span class="badge badge-warn">الغياب الكلي: ${totalAbs}</span>` : ""}
+                  </div>
+                  <!-- 7-Day Mini History Dots -->
+                  <div class="row-wrap" style="margin-top:6px;gap:4px;">
+                    <span style="font-size:10px;color:var(--text-muted);font-weight:700;">آخر 7 أيام:</span>
+                    ${past7.map(d => {
+                      const st = state.attendance[`${std.id}_${d.iso}`] || "present";
+                      const col = st === "absent" ? "#F43F5E" : st === "excused" ? "#F59E0B" : "#10B981";
+                      return `<span title="${d.label}: ${st}" style="width:9px;height:9px;border-radius:50%;background:${col};display:inline-block;"></span>`;
+                    }).join("")}
+                  </div>
+                </div>
+                ${todaySt === "absent" ? `
+                  <button class="btn btn-rose" style="padding:6px 10px;font-size:11px;" onclick="sendWhatsAppAbsenceAlert('${std.id}')">📲 إبلاغ ولي الأمر</button>
+                ` : ""}
+              </div>
+
+              <!-- 4 Attendance Status Buttons (Present, Absent, Excused, Intisab) -->
+              <div class="grid-4" style="margin-top:10px;">
+                <button class="chip ${todaySt === "present" ? "active-emerald" : ""}" style="justify-content:center;" onclick="setAttendance('${std.id}','present')">حاضر ✅</button>
+                <button class="chip ${todaySt === "absent" ? "active-rose" : ""}" style="justify-content:center;" onclick="setAttendance('${std.id}','absent')">غائب ❌</button>
+                <button class="chip ${todaySt === "excused" ? "active-amber" : ""}" style="justify-content:center;" onclick="setAttendance('${std.id}','excused')">إجازة 🕒</button>
+                <button class="chip" style="justify-content:center;color:#C084FC;border-color:rgba(192,132,252,0.4);" onclick="toggleStudentIntisab('${std.id}')">انتساب 🏠</button>
+              </div>
+            </div>
+          `;
+        }).join("")}
+      `;
+    }
+
+    function renderRollCallCard(studentsList, dateStr) {
+      const idx = Math.min(Math.max(0, state.rollCallIdx), studentsList.length - 1);
+      const std = studentsList[idx];
+      return `
+        <div style="background:linear-gradient(135deg,#1E1B4B,#312E81);border:1px solid var(--indigo-400);border-radius:16px;padding:14px;margin-bottom:12px;color:#fff;text-align:center;">
+          <div class="row-between" style="font-size:11px;color:#C7D2FE;font-weight:800;">
+            <span>🗣️ النداء السريع المباشر</span>
+            <span>الطالب ${idx + 1} من ${studentsList.length}</span>
+          </div>
+          <div style="font-size:18px;font-weight:900;margin:8px 0;">${escapeHtml(std.name)}</div>
+          <div style="font-size:11px;color:#A5B4FC;margin-bottom:10px;">شعبة (${std.section}) ${std.isIntisab ? "• 🏠 طالب انتساب" : ""}</div>
+          <div class="grid-4">
+            <button class="btn btn-emerald" onclick="rollCallMark('${std.id}','present',${studentsList.length})">حاضر ✅</button>
+            <button class="btn btn-rose" onclick="rollCallMark('${std.id}','absent',${studentsList.length})">غائب ❌</button>
+            <button class="btn btn-amber" onclick="rollCallMark('${std.id}','excused',${studentsList.length})">إجازة 🕒</button>
+            <button class="btn btn-purple" onclick="rollCallMarkIntisab('${std.id}',${studentsList.length})">انتساب 🏠</button>
+          </div>
+        </div>
+      `;
+    }
+
+    function toggleRollCallMode() {
+      state.rollCallActive = !state.rollCallActive;
+      state.rollCallIdx = 0;
+      render();
+    }
+
+    function rollCallMark(stdId, status, totalLen) {
+      const s = state.students.find(x => x.id === stdId);
+      if (s) s.isIntisab = false;
+      state.attendance[`${stdId}_${state.attendanceDate}`] = status;
+      if (state.rollCallIdx + 1 < totalLen) {
+        state.rollCallIdx++;
+      } else {
+        state.rollCallActive = false;
+        showToast("اكتمل النداء السريع لجميع طلاب القائمة ✅");
+      }
+      saveState();
+      render();
+    }
+
+    function rollCallMarkIntisab(stdId, totalLen) {
+      const s = state.students.find(x => x.id === stdId);
+      if (s) s.isIntisab = true;
+      if (state.rollCallIdx + 1 < totalLen) {
+        state.rollCallIdx++;
+      } else {
+        state.rollCallActive = false;
+        showToast("اكتمل النداء السريع لجميع طلاب القائمة ✅");
+      }
+      saveState();
+      render();
+    }
+
+    function setAttendance(stdId, status) {
+      state.attendance[`${stdId}_${state.attendanceDate}`] = status;
+      saveState();
+      render();
+    }
+
+    function markAllRegularPresent() {
+      const dateStr = state.attendanceDate || todayIso();
+      getFilteredStudents().forEach(s => {
+        if (!s.isIntisab) {
+          state.attendance[`${s.id}_${dateStr}`] = "present";
+        }
+      });
+      saveState();
+      render();
+      showToast("تم تسجيل الحضور لجميع الطلاب النظاميين (باستثناء طلاب الانتساب) ✅");
+    }
+
+    function sendWhatsAppAbsenceAlert(stdId) {
+      const s = state.students.find(x => x.id === stdId);
+      if (!s) return;
+      const totalAbs = Object.keys(state.attendance).filter(k => k.startsWith(s.id + "_") && state.attendance[k] === "absent").length;
+      const msg = `تحية طيبة ولي أمر الطالب (${s.name}) المحترم، نود إعلامكم بتغيب ولدكم هذا اليوم (${state.attendanceDate}) في ${state.settings.schoolName}. إجمالي الغيابات المسجلة: (${totalAbs}) يوم. مع التقدير — ${state.settings.teacherName}`;
+      const phone = (s.phone || "").replace(/\D/g, "");
+      const url = phone
+        ? `https://wa.me/${phone.startsWith("0") ? "964" + phone.substring(1) : phone}?text=${encodeURIComponent(msg)}`
+        : `https://wa.me/?text=${encodeURIComponent(msg)}`;
+      window.open(url, "_blank");
+    }
+
+    function shareDailyAttendanceSummary() {
+      const dateStr = state.attendanceDate || todayIso();
+      const all = getFilteredStudents();
+      const intisab = all.filter(s => s.isIntisab);
+      const regular = all.filter(s => !s.isIntisab);
+      const absList = regular.filter(s => state.attendance[`${s.id}_${dateStr}`] === "absent");
+      const excList = regular.filter(s => state.attendance[`${s.id}_${dateStr}`] === "excused");
+      const presCount = regular.length - absList.length - excList.length;
+
+      const text = [
+        `📋 *الموقف اليومي للحضور والغياب*`,
+        `🏫 ${state.settings.schoolName} | ${getCurrentStage().name} ${state.globalSec ? `شعبة (${state.globalSec})` : ""}`,
+        `📅 التاريخ: ${dateStr}`,
+        `✅ الحضور: ${presCount} | ❌ الغياب: ${absList.length} | 🕒 الإجازات: ${excList.length} | 🏠 الانتساب: ${intisab.length}`,
+        absList.length > 0 ? `\n❌ *أسماء الغائبين:*\n` + absList.map((s, i) => `${i + 1}. ${s.name}`).join("\n") : `\n✨ لا يوجد غياب هذا اليوم.`
+      ].join("\n");
+
+      window.open(`https://wa.me/?text=${encodeURIComponent(text)}`, "_blank");
+    }
+
+    /*************************************************************************
+     * 5. SMART SCHEDULE VIEW (1:1 Match with SmartScheduleScreen.kt)
+     *************************************************************************/
+    function calculateDayBreakMinutes(dayId) {
+      let totalBreak = 0;
+      for (let i = 1; i < 6; i++) {
+        const cur = state.schedule[`${dayId}_${i}`];
+        const nxt = state.schedule[`${dayId}_${i + 1}`];
+        const endStr = cur?.endTime || DEFAULT_LESSON_TIMES[i].end;
+        const startStr = nxt?.startTime || DEFAULT_LESSON_TIMES[i + 1].start;
+        const endM = parseMinutes(endStr);
+        const startM = parseMinutes(startStr);
+        if (endM !== null && startM !== null && startM > endM) {
+          totalBreak += (startM - endM);
+        }
+      }
+      return totalBreak;
+    }
+
+    function renderScheduleView() {
+      const selDay = state.selectedScheduleDay;
+      const dayObj = DAYS.find(d => d.id === selDay) || DAYS[0];
+      const assignedInDay = [1, 2, 3, 4, 5, 6].filter(s => !!state.schedule[`${selDay}_${s}`]).length;
+      const totalBreakMins = calculateDayBreakMinutes(selDay);
+      const live = getLiveLessonStatus();
+
+      return `
+        <!-- Hero Schedule Command & Notification Bar -->
+        <div class="hero-card">
+          <div class="row-between">
+            <div>
+              <div style="font-size:16px;font-weight:900;">⏰ مركز الحصص والجدول الذكي</div>
+              <div style="font-size:11px;color:#C7D2FE;font-weight:700;">تنبيهات الحصص الفورية وحساب الفرص والاستراحات تلقائياً</div>
+            </div>
+            <button class="btn btn-amber" style="padding:7px 10px;font-size:11px;" onclick="testScheduleAlarmNow()">🔊 تجربة التنبيه</button>
+          </div>
+
+          <!-- Teacher Notification Controls -->
+          <div style="background:rgba(15,23,42,0.55);border:1px solid rgba(129,140,248,0.3);border-radius:14px;padding:10px;margin-top:10px;">
+            <div class="row-between" style="margin-bottom:8px;">
+              <span style="font-size:12px;font-weight:900;">🔔 إشعارات تنبيه المدرس بالحصص</span>
+              <input type="checkbox" ${state.scheduleNotificationsEnabled ? "checked" : ""} onchange="state.scheduleNotificationsEnabled=this.checked;saveState();render();" style="width:18px;height:18px;accent-color:#10B981;" />
+            </div>
+            ${state.scheduleNotificationsEnabled ? `
+              <div class="scroll-row">
+                <span style="font-size:10px;color:#C7D2FE;font-weight:800;">وقت التنبيه:</span>
+                ${[0, 5, 10, 15].map(m => `
+                  <button class="chip ${state.scheduleNotifyLeadMinutes === m ? "active-emerald" : ""}" onclick="state.scheduleNotifyLeadMinutes=${m};saveState();render();">
+                    ${m === 0 ? "عند البدء تماماً" : `قبل ${m} دقائق`}
+                  </button>
+                `).join("")}
+              </div>
+            ` : ""}
+          </div>
+        </div>
+
+        <!-- View Mode Switcher (Timeline vs Weekly Matrix) -->
+        <div class="grid-2">
+          <button class="btn ${state.scheduleViewMode === "timeline" ? "btn-indigo" : "btn-sub"}" onclick="state.scheduleViewMode='timeline';render();">
+            📋 واجهة الحصص الزمنية
+          </button>
+          <button class="btn ${state.scheduleViewMode === "matrix" ? "btn-indigo" : "btn-sub"}" onclick="state.scheduleViewMode='matrix';render();">
+            🗓️ الشبكة الأسبوعية الشاملة
+          </button>
+        </div>
+
+        ${state.scheduleViewMode === "matrix" ? renderWeeklyMatrixHtml() : `
+          <!-- 5-Day Selector Ribbon -->
+          <div class="grid-5">
+            ${DAYS.map(d => {
+              const cnt = [1, 2, 3, 4, 5, 6].filter(s => !!state.schedule[`${d.id}_${s}`]).length;
+              const active = d.id === selDay;
+              return `
+                <button class="chip ${active ? "active" : ""}" style="flex-direction:column;padding:8px 4px;justify-content:center;" onclick="state.selectedScheduleDay=${d.id};render();">
+                  <span style="font-size:12px;font-weight:900;">${d.name}</span>
+                  <span style="font-size:9px;opacity:0.85;">${cnt > 0 ? `${cnt} حصص` : "شاغر"}</span>
+                </button>
+              `;
+            }).join("")}
+          </div>
+
+          <!-- Day Summary & Actions Strip -->
+          <div class="card" style="padding:10px 12px;" class="row-between">
+            <div class="row-between" style="flexWrap:wrap;">
+              <div class="row-wrap">
+                <span class="badge badge-pass">حصص ${dayObj.name}: ${assignedInDay} من 6</span>
+                <span class="badge badge-warn">☕ إجمالي الفرص: ${totalBreakMins} د</span>
+              </div>
+              <div class="row-wrap">
+                ${assignedInDay > 0 ? `
+                  <button class="chip" onclick="openCopyDayScheduleModal(${selDay})">📋 نسخ اليوم</button>
+                  <button class="chip active-rose" onclick="clearScheduleDay(${selDay})">🗑️ تفريغ</button>
+                ` : ""}
+              </div>
+            </div>
+          </div>
+
+          <!-- 6 Slots Timeline + Automatic Break Time Indicator between lessons -->
+          <div style="display:flex;flex-direction:column;gap:6px;">
+            ${[1, 2, 3, 4, 5, 6].map(slotNum => {
+              const key = `${selDay}_${slotNum}`;
+              const item = state.schedule[key];
+              const defTime = DEFAULT_LESSON_TIMES[slotNum];
+              const startT = item?.startTime || defTime.start;
+              const endT = item?.endTime || defTime.end;
+
+              // Break time calculation after this slot
+              let breakHtml = "";
+              if (slotNum < 6) {
+                const nextItem = state.schedule[`${selDay}_${slotNum + 1}`];
+                const nextStart = nextItem?.startTime || DEFAULT_LESSON_TIMES[slotNum + 1].start;
+                const eM = parseMinutes(endT);
+                const sM = parseMinutes(nextStart);
+                const diff = (eM !== null && sM !== null && sM > eM) ? (sM - eM) : 0;
+                if (diff > 0) {
+                  breakHtml = `
+                    <div class="break-pill">
+                      <div class="break-line"></div>
+                      <span class="break-badge">☕ فرصة / استراحة بين الحصتين: ${diff} دقيقة</span>
+                      <div class="break-line"></div>
+                    </div>
+                  `;
+                }
+              }
+
+              return `
+                <div class="card" style="border-color:${item ? "rgba(99,102,241,0.45)" : "var(--border-color)"};">
+                  <div class="row-between">
+                    <div style="display:flex;align-items:center;gap:10px;flex:1;cursor:pointer;" onclick="openEditSlotModal(${selDay},${slotNum})">
+                      <div style="width:42px;height:42px;border-radius:12px;background:${item ? "var(--indigo-600)" : "var(--bg-sub)"};color:${item ? "#fff" : "var(--text-muted)"};display:flex;flex-direction:column;align-items:center;justify-content:center;font-weight:900;flex-shrink:0;">
+                        <span style="font-size:9px;">الحصة</span>
+                        <span style="font-size:15px;line-height:1;">${slotNum}</span>
+                      </div>
+                      <div style="flex:1;">
+                        ${item ? `
+                          <div class="row-wrap">
+                            <span style="font-size:14px;font-weight:900;">${escapeHtml(item.stageName)} — شعبة (${escapeHtml(item.section)})</span>
+                            <span class="badge" style="background:rgba(99,102,241,0.16);color:var(--indigo-400);">📚 ${escapeHtml(item.subject)}</span>
+                          </div>
+                          ${item.lessonTitle ? `<div style="font-size:11px;color:var(--amber-400);font-weight:800;margin-top:3px;">📌 ${escapeHtml(item.lessonTitle)}</div>` : ""}
+                        ` : `
+                          <div style="font-size:13px;font-weight:800;color:var(--text-muted);">حصة شاغرة — اضغط لتعيين الصف والشعبة والوقت</div>
+                        `}
+                        <div style="font-size:11px;font-weight:800;color:var(--text-muted);margin-top:3px;">
+                          🕒 ${startT} ⬅️ ${endT}
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="row-wrap">
+                      ${item ? `
+                        <button class="chip active-emerald" onclick="jumpToLessonScope('${item.deptId}','${item.stageId}','${item.section}','${item.subject}')">🚀 دخول</button>
+                        <button class="chip active-rose" onclick="deleteScheduleSlot(${selDay},${slotNum})">🗑️</button>
+                      ` : `
+                        <button class="chip active" onclick="openEditSlotModal(${selDay},${slotNum})">➕ تعيين</button>
+                      `}
+                    </div>
+                  </div>
+                </div>
+                ${breakHtml}
+              `;
+            }).join("")}
+          </div>
+        `}
+      `;
+    }
+
+    function renderWeeklyMatrixHtml() {
+      return `
+        <div class="card" style="overflow-x:auto;">
+          <table style="width:100%;border-collapse:collapse;font-size:11px;text-align:center;">
+            <thead>
+              <tr style="background:var(--bg-sub);">
+                <th style="padding:8px;border:1px solid var(--border-color);">اليوم</th>
+                ${[1, 2, 3, 4, 5, 6].map(s => `<th style="padding:8px;border:1px solid var(--border-color);">حصة ${s}</th>`).join("")}
+              </tr>
+            </thead>
+            <tbody>
+              ${DAYS.map(d => `
+                <tr>
+                  <td style="padding:8px;border:1px solid var(--border-color);font-weight:900;background:var(--bg-sub);">${d.name}</td>
+                  ${[1, 2, 3, 4, 5, 6].map(s => {
+                    const it = state.schedule[`${d.id}_${s}`];
+                    return `
+                      <td style="padding:6px;border:1px solid var(--border-color);cursor:pointer;background:${it ? "rgba(99,102,241,0.12)" : "transparent"};" onclick="openEditSlotModal(${d.id},${s})">
+                        ${it ? `
+                          <div style="font-weight:900;color:var(--indigo-400);">${escapeHtml(it.stageName)} (${escapeHtml(it.section)})</div>
+                          <div style="font-size:10px;">${escapeHtml(it.subject)}</div>
+                          <div style="font-size:9px;color:var(--text-muted);">${it.startTime}-${it.endTime}</div>
+                        ` : `<span style="color:var(--text-muted);">-</span>`}
+                      </td>
+                    `;
+                  }).join("")}
+                </tr>
+              `).join("")}
+            </tbody>
+          </table>
+        </div>
+      `;
+    }
+
+    function openEditSlotModal(dayId, slotNum) {
+      const key = `${dayId}_${slotNum}`;
+      const existing = state.schedule[key];
+      const defTime = DEFAULT_LESSON_TIMES[slotNum];
+      const deptId = existing?.deptId || state.globalDept;
+      const dept = state.structure.find(d => d.id === deptId) || getCurrentDept();
+      const stageId = existing?.stageId || dept.stages[0]?.id;
+      const stage = dept.stages.find(s => s.id === stageId) || dept.stages[0];
+      const sec = existing?.section || stage.sections[0] || "أ";
+      const sub = existing?.subject || stage.subjects[0] || "";
+      const title = existing?.lessonTitle || "";
+      const startT = existing?.startTime || defTime.start;
+      const endT = existing?.endTime || defTime.end;
+      const dayName = DAYS.find(d => d.id === dayId)?.name || "";
+
+      openModal(`
+        <div>
+          <h3 style="margin:0 0 10px;font-size:16px;font-weight:900;">⏰ تخصيص الحصة (${slotNum}) — يوم ${dayName}</h3>
+          <div style="display:flex;flex-direction:column;gap:10px;">
+            <div class="grid-2">
+              <div>
+                <label class="label-sm">المرحلة</label>
+                <select id="slotDeptSelect" class="select" onchange="onSlotModalDeptChange(this.value,${dayId},${slotNum})">
+                  ${state.structure.map(d => `<option value="${d.id}" ${d.id === dept.id ? "selected" : ""}>${d.name}</option>`).join("")}
+                </select>
+              </div>
+              <div>
+                <label class="label-sm">الصف</label>
+                <select id="slotStageSelect" class="select" onchange="onSlotModalStageChange(this.value,${dayId},${slotNum})">
+                  ${dept.stages.map(s => `<option value="${s.id}" ${s.id === stage.id ? "selected" : ""}>${s.name}</option>`).join("")}
+                </select>
+              </div>
+            </div>
+            <div class="grid-2">
+              <div>
+                <label class="label-sm">الشعبة</label>
+                <select id="slotSecSelect" class="select">
+                  ${stage.sections.map(sc => `<option value="${sc}" ${sc === sec ? "selected" : ""}>شعبة (${sc})</option>`).join("")}
+                </select>
+              </div>
+              <div>
+                <label class="label-sm">المادة</label>
+                <select id="slotSubSelect" class="select">
+                  ${stage.subjects.map(sb => `<option value="${sb}" ${sb === sub ? "selected" : ""}>${sb}</option>`).join("")}
+                </select>
+              </div>
+            </div>
+            <div class="grid-2">
+              <div>
+                <label class="label-sm">وقت بداية الحصة</label>
+                <input id="slotStartInput" type="time" class="input" value="${startT}" />
+              </div>
+              <div>
+                <label class="label-sm">وقت نهاية الحصة</label>
+                <input id="slotEndInput" type="time" class="input" value="${endT}" />
+              </div>
+            </div>
+            <div>
+              <label class="label-sm">عنوان الدرس / ملاحظة التذكير (اختياري)</label>
+              <input id="slotTitleInput" class="input" placeholder="مثال: شرح موضوع المعادلات..." value="${escapeHtml(title)}" />
+            </div>
+            <div class="grid-2" style="margin-top:6px;">
+              <button class="btn btn-emerald" onclick="saveScheduleSlot(${dayId},${slotNum})">حفظ الحصة ✅</button>
+              <button class="btn btn-sub" onclick="closeModal()">إلغاء</button>
+            </div>
+          </div>
+        </div>
+      `);
+    }
+
+    function onSlotModalDeptChange(newDeptId, dayId, slotNum) {
+      const dept = state.structure.find(d => d.id === newDeptId) || state.structure[0];
+      const stg = dept.stages[0];
+      state.schedule[`${dayId}_${slotNum}`] = {
+        deptId: dept.id,
+        stageId: stg.id,
+        stageName: stg.name,
+        section: stg.sections[0] || "أ",
+        subject: stg.subjects[0] || "",
+        startTime: document.getElementById("slotStartInput")?.value || DEFAULT_LESSON_TIMES[slotNum].start,
+        endTime: document.getElementById("slotEndInput")?.value || DEFAULT_LESSON_TIMES[slotNum].end,
+        lessonTitle: document.getElementById("slotTitleInput")?.value || ""
+      };
+      openEditSlotModal(dayId, slotNum);
+    }
+
+    function onSlotModalStageChange(newStageId, dayId, slotNum) {
+      const deptId = document.getElementById("slotDeptSelect")?.value || state.globalDept;
+      const dept = state.structure.find(d => d.id === deptId) || state.structure[0];
+      const stg = dept.stages.find(s => s.id === newStageId) || dept.stages[0];
+      state.schedule[`${dayId}_${slotNum}`] = {
+        deptId: dept.id,
+        stageId: stg.id,
+        stageName: stg.name,
+        section: stg.sections[0] || "أ",
+        subject: stg.subjects[0] || "",
+        startTime: document.getElementById("slotStartInput")?.value || DEFAULT_LESSON_TIMES[slotNum].start,
+        endTime: document.getElementById("slotEndInput")?.value || DEFAULT_LESSON_TIMES[slotNum].end,
+        lessonTitle: document.getElementById("slotTitleInput")?.value || ""
+      };
+      openEditSlotModal(dayId, slotNum);
+    }
+
+    function saveScheduleSlot(dayId, slotNum) {
+      const deptId = document.getElementById("slotDeptSelect")?.value || state.globalDept;
+      const stageId = document.getElementById("slotStageSelect")?.value || state.globalStage;
+      const dept = state.structure.find(d => d.id === deptId) || getCurrentDept();
+      const stage = dept.stages.find(s => s.id === stageId) || getCurrentStage();
+      const section = document.getElementById("slotSecSelect")?.value || "أ";
+      const subject = document.getElementById("slotSubSelect")?.value || "";
+      const startTime = document.getElementById("slotStartInput")?.value || DEFAULT_LESSON_TIMES[slotNum].start;
+      const endTime = document.getElementById("slotEndInput")?.value || DEFAULT_LESSON_TIMES[slotNum].end;
+      const lessonTitle = document.getElementById("slotTitleInput")?.value || "";
+
+      state.schedule[`${dayId}_${slotNum}`] = {
+        deptId,
+        stageId,
+        stageName: stage.name,
+        section,
+        subject,
+        startTime,
+        endTime,
+        lessonTitle
+      };
+      saveState();
+      closeModal();
+      render();
+      showToast("تم حفظ الحصة الدراسية وحساب وقت الفرصة تلقائياً ✅");
+    }
+
+    function deleteScheduleSlot(dayId, slotNum) {
+      delete state.schedule[`${dayId}_${slotNum}`];
+      saveState();
+      render();
+      showToast("تم تفريغ الحصة بنجاح 🗑️");
+    }
+
+    function clearScheduleDay(dayId) {
+      for (let s = 1; s <= 6; s++) {
+        delete state.schedule[`${dayId}_${s}`];
+      }
+      saveState();
+      render();
+      showToast("تم تفريغ جدول اليوم بالكامل 🗑️");
+    }
+
+    function openCopyDayScheduleModal(sourceDayId) {
+      const srcName = DAYS.find(d => d.id === sourceDayId)?.name || "";
+      openModal(`
+        <div>
+          <h3 style="margin:0 0 10px;font-size:16px;font-weight:900;">📋 نسخ جدول يوم (${srcName}) إلى يوم آخر</h3>
+          <div style="display:flex;flex-direction:column;gap:8px;">
+            ${DAYS.filter(d => d.id !== sourceDayId).map(d => `
+              <button class="btn btn-indigo" onclick="copyScheduleDayTo(${sourceDayId},${d.id})">نسخ إلى يوم ${d.name}</button>
+            `).join("")}
+            <button class="btn btn-sub" onclick="closeModal()">إلغاء</button>
+          </div>
+        </div>
+      `);
+    }
+
+    function copyScheduleDayTo(srcDay, targetDay) {
+      for (let s = 1; s <= 6; s++) {
+        const item = state.schedule[`${srcDay}_${s}`];
+        if (item) {
+          state.schedule[`${targetDay}_${s}`] = JSON.parse(JSON.stringify(item));
+        } else {
+          delete state.schedule[`${targetDay}_${s}`];
+        }
+      }
+      state.selectedScheduleDay = targetDay;
+      saveState();
+      closeModal();
+      render();
+      showToast("تم نسخ الجدول بنجاح ✅");
+    }
+
+    function testScheduleAlarmNow() {
+      try {
+        const ctx = new (window.AudioContext || window.webkitAudioContext)();
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+        osc.type = "sine";
+        osc.frequency.setValueAtTime(880, ctx.currentTime);
+        gain.gain.setValueAtTime(0.2, ctx.currentTime);
+        osc.connect(gain);
+        gain.connect(ctx.destination);
+        osc.start();
+        osc.stop(ctx.currentTime + 0.35);
+      } catch (e) {}
+      showToast("🔔 تنبيه بوصلة الأستاذ: حان موعد الحصة الدراسية!");
+    }
+
+    /*************************************************************************
+     * 6. SETTINGS VIEW (1:1 Match with SettingsScreen.kt)
+     *************************************************************************/
+    function renderSettingsView() {
+      const isSchool = state.activeSettingsTab === "school";
+      const dept = getCurrentDept();
+      const stage = getCurrentStage();
+
+      return `
+        <!-- Segmented Settings Header Tabs -->
+        <div class="grid-2">
+          <button class="btn ${isSchool ? "btn-indigo" : "btn-sub"}" onclick="openSettingsTab('school')">
+            🏫 المدرسة والمدرس
+          </button>
+          <button class="btn ${!isSchool ? "btn-indigo" : "btn-sub"}" onclick="openSettingsTab('app')">
+            ⚙️ إعدادات التطبيق
+          </button>
+        </div>
+
+        ${isSchool ? `
+          <!-- Official School & Teacher Data -->
+          <div class="card">
+            <h3 style="margin:0 0 10px;font-size:15px;font-weight:900;">🏛️ البيانات الرسمية للكشوفات والطباعة</h3>
+            <div style="display:flex;flex-direction:column;gap:10px;">
+              <div>
+                <label class="label-sm">اسم الوزارة / المديرية</label>
+                <input id="setMinistry" class="input" value="${escapeHtml(state.settings.ministryName)}" />
+              </div>
+              <div>
+                <label class="label-sm">اسم المدرسة</label>
+                <input id="setSchool" class="input" value="${escapeHtml(state.settings.schoolName)}" />
+              </div>
+              <div class="grid-2">
+                <div>
+                  <label class="label-sm">اسم مدرس المادة</label>
+                  <input id="setTeacher" class="input" value="${escapeHtml(state.settings.teacherName)}" />
+                </div>
+                <div>
+                  <label class="label-sm">العام الدراسي</label>
+                  <input id="setYear" class="input" value="${escapeHtml(state.settings.academicYear)}" />
+                </div>
+              </div>
+              <button class="btn btn-emerald" onclick="saveOfficialSettings()">حفظ الإعدادات الرسمية ✅</button>
+            </div>
+          </div>
+
+          <!-- Full Interactive Structure Builder -->
+          <div class="card">
+            <div class="row-between" style="margin-bottom:10px;">
+              <div>
+                <div style="font-size:15px;font-weight:900;">🏗️ هيكلة المراحل والصفوف والمواد والشُعب</div>
+                <div style="font-size:11px;color:var(--text-muted);font-weight:700;">إضافة أو حذف المراحل والصفوف والمواد وتحديد نظام الدرجة (100 أو 10)</div>
+              </div>
+              <button class="chip ${state.isStructureDeleteMode ? "active-rose" : ""}" onclick="state.isStructureDeleteMode=!state.isStructureDeleteMode;render();">
+                ${state.isStructureDeleteMode ? "🗑️ وضع الحذف مفعّل" : "🔒 تفعيل وضع الحذف"}
+              </button>
+            </div>
+
+            <!-- 1. Departments -->
+            <div style="background:var(--bg-sub);padding:10px;border-radius:14px;margin-bottom:10px;">
+              <div class="label-sm" style="color:var(--indigo-400);">1. المراحل الدراسية:</div>
+              <div class="row-wrap" style="margin-bottom:8px;">
+                ${state.structure.map(d => `
+                  <span class="chip ${d.id === dept.id ? "active" : ""}" onclick="onChangeDept('${d.id}')">
+                    ${escapeHtml(d.name)}
+                    ${state.isStructureDeleteMode ? `<b style="color:#FECDD3;margin-right:4px;" onclick="event.stopPropagation();deleteDept('${d.id}')">✕</b>` : ""}
+                  </span>
+                `).join("")}
+              </div>
+              <div class="row-between">
+                <input id="newDeptInput" class="input" placeholder="اسم مرحلة جديدة (مثال: معهد...)" />
+                <button class="btn btn-indigo" onclick="addDept()">➕ إضافة</button>
+              </div>
+            </div>
+
+            <!-- 2. Stages + maxGrade (100 / 10) Toggle -->
+            <div style="background:var(--bg-sub);padding:10px;border-radius:14px;margin-bottom:10px;">
+              <div class="label-sm" style="color:var(--indigo-400);">2. صفوف المرحلة (${dept.name}) ونظام الدرجة (100 أو 10):</div>
+              <div class="row-wrap" style="margin-bottom:8px;">
+                ${dept.stages.map(s => `
+                  <span class="chip ${s.id === stage.id ? "active" : ""}" onclick="onChangeStage('${s.id}')">
+                    ${escapeHtml(s.name)}
+                    <span class="badge" style="background:rgba(16,185,129,0.2);color:#A7F3D0;" onclick="event.stopPropagation();toggleStageMaxGrade('${s.id}')">
+                      من ${s.maxGrade || 100} 🔄
+                    </span>
+                    ${state.isStructureDeleteMode ? `<b style="color:#FECDD3;margin-right:4px;" onclick="event.stopPropagation();deleteStage('${s.id}')">✕</b>` : ""}
+                  </span>
+                `).join("")}
+              </div>
+              <div class="row-between">
+                <input id="newStageInput" class="input" placeholder="اسم صف جديد..." />
+                <button class="btn btn-indigo" onclick="addStage()">➕ إضافة</button>
+              </div>
+            </div>
+
+            <!-- 3. Subjects -->
+            <div style="background:var(--bg-sub);padding:10px;border-radius:14px;margin-bottom:10px;">
+              <div class="label-sm" style="color:var(--indigo-400);">3. مواد الصف (${stage.name}):</div>
+              <div class="row-wrap" style="margin-bottom:8px;">
+                ${stage.subjects.map(sub => `
+                  <span class="chip">
+                    ${escapeHtml(sub)}
+                    ${state.isStructureDeleteMode ? `<b style="color:var(--rose-500);margin-right:4px;" onclick="deleteSubject('${sub}')">✕</b>` : ""}
+                  </span>
+                `).join("")}
+              </div>
+              <div class="row-between">
+                <input id="newSubInput" class="input" placeholder="اسم مادة جديدة..." />
+                <button class="btn btn-indigo" onclick="addSubject()">➕ إضافة</button>
+              </div>
+            </div>
+
+            <!-- 4. Sections -->
+            <div style="background:var(--bg-sub);padding:10px;border-radius:14px;">
+              <div class="label-sm" style="color:var(--indigo-400);">4. شُعب الصف (${stage.name}):</div>
+              <div class="row-wrap" style="margin-bottom:8px;">
+                ${stage.sections.map(sec => `
+                  <span class="chip">
+                    شعبة (${escapeHtml(sec)})
+                    ${state.isStructureDeleteMode ? `<b style="color:var(--rose-500);margin-right:4px;" onclick="deleteSection('${sec}')">✕</b>` : ""}
+                  </span>
+                `).join("")}
+              </div>
+              <div class="row-between">
+                <input id="newSecInput" class="input" placeholder="رمز الشعبة (مثال: د)..." />
+                <button class="btn btn-indigo" onclick="addSection()">➕ إضافة</button>
+              </div>
+            </div>
+          </div>
+        ` : `
+          <!-- App System Settings Tab -->
+          <div class="hero-card">
+            <div class="row-between">
+              <div>
+                <div style="font-size:17px;font-weight:900;">بوصلة الأستاذ</div>
+                <div style="font-size:11px;color:#C7D2FE;font-weight:700;">تطوير وبرمجة الاستاذ وعد مجيد</div>
+                <div class="row-wrap" style="margin-top:8px;">
+                  <span class="badge" style="background:rgba(129,140,248,0.22);color:#E0E7FF;border:1px solid rgba(129,140,248,0.5);">
+                    الإصدار الحالي: v${APP_VERSION_NAME} (${APP_VERSION_CODE})
+                  </span>
+                  <span class="badge badge-pass">نسخة الآيفون iOS الكاملة</span>
+                </div>
+              </div>
+              <button class="btn btn-indigo" onclick="checkRemoteOtaUpdate(true)">🔄 فحص التحديث</button>
+            </div>
+          </div>
+
+          <!-- PIN Lock Card -->
+          <div class="card">
+            <h3 style="margin:0 0 6px;font-size:14px;font-weight:900;">🔒 قفل التطبيق برمز مرور (PIN)</h3>
+            <p style="margin:0 0 10px;font-size:11px;color:var(--text-muted);font-weight:700;">حماية السجلات والدرجات برمز سري عند فتح التطبيق</p>
+            <div class="row-between">
+              <input id="pinSetInput" type="password" inputmode="numeric" class="input" placeholder="أدخل رمز PIN جديد (أو اتركه فارغاً لإلغاء القفل)" value="${escapeHtml(state.savedPin)}" />
+              <button class="btn btn-indigo" style="white-space:nowrap;" onclick="savePinCode()">حفظ الرمز 🔐</button>
+            </div>
+          </div>
+
+          <!-- Backup & Restore Card -->
+          <div class="card">
+            <h3 style="margin:0 0 6px;font-size:14px;font-weight:900;">💾 النسخ الاحتياطي والاستعادة الشاملة</h3>
+            <p style="margin:0 0 10px;font-size:11px;color:var(--text-muted);font-weight:700;">تصدير واستيراد قاعدة البيانات الكاملة (متوافقة مع نسخة الأندرويد والآيفون)</p>
+            <div class="grid-2">
+              <button class="btn btn-emerald" onclick="exportBackupJson()">⬇️ تصدير نسخة احتياطية</button>
+              <label class="btn btn-indigo" style="cursor:pointer;">
+                ⬆️ استعادة نسخة احتياطية
+                <input type="file" accept=".json" style="display:none;" onchange="importBackupJson(event)" />
+              </label>
+            </div>
+          </div>
+
+          <!-- Academic Year Reset Card -->
+          <div class="card" style="border-color:rgba(244,63,94,0.4);">
+            <h3 style="margin:0 0 6px;font-size:14px;font-weight:900;color:var(--rose-500);">⚠️ تصفير بيانات العام الدراسي الجديد</h3>
+            <p style="margin:0 0 10px;font-size:11px;color:var(--text-muted);font-weight:700;">يمكنك تصفير الدرجات والغيابات فقط مع إبقاء أسماء الطلاب، أو مسح كل شيء نهائياً.</p>
+            <button class="btn btn-rose" style="width:100%;" onclick="openAcademicYearResetModal()">🗑️ فتح خيارات تصفير العام الدراسي</button>
+          </div>
+        `}
+      `;
+    }
+
+    function saveOfficialSettings() {
+      state.settings.ministryName = document.getElementById("setMinistry")?.value || state.settings.ministryName;
+      state.settings.schoolName = document.getElementById("setSchool")?.value || state.settings.schoolName;
+      state.settings.teacherName = document.getElementById("setTeacher")?.value || state.settings.teacherName;
+      state.settings.academicYear = document.getElementById("setYear")?.value || state.settings.academicYear;
+      saveState();
+      render();
+      showToast("تم حفظ البيانات الرسمية للمدرسة والمدرس ✅");
+    }
+
+    function addDept() {
+      const name = (document.getElementById("newDeptInput")?.value || "").trim();
+      if (!name) return;
+      const id = "dept_" + Date.now();
+      state.structure.push({
+        id,
+        name,
+        stages: [{ id: "stg_" + Date.now(), name: "الصف الأول", maxGrade: 100, subjects: ["العامة"], sections: ["أ"] }]
+      });
+      state.globalDept = id;
+      state.globalStage = state.structure[state.structure.length - 1].stages[0].id;
+      saveState();
+      render();
+    }
+
+    function deleteDept(deptId) {
+      if (state.structure.length <= 1) {
+        showToast("لا يمكن حذف جميع المراحل الدراسية ⚠️");
+        return;
+      }
+      state.structure = state.structure.filter(d => d.id !== deptId);
+      state.globalDept = state.structure[0].id;
+      state.globalStage = state.structure[0].stages[0]?.id || "";
+      saveState();
+      render();
+    }
+
+    function addStage() {
+      const name = (document.getElementById("newStageInput")?.value || "").trim();
+      if (!name) return;
+      const dept = getCurrentDept();
+      const id = "stg_" + Date.now();
+      dept.stages.push({ id, name, maxGrade: 100, subjects: ["الرياضيات", "اللغة العربية"], sections: ["أ", "ب"] });
+      state.globalStage = id;
+      saveState();
+      render();
+    }
+
+    function toggleStageMaxGrade(stageId) {
+      const dept = getCurrentDept();
+      const stg = dept.stages.find(s => s.id === stageId);
+      if (!stg) return;
+      stg.maxGrade = stg.maxGrade === 10 ? 100 : 10;
+      saveState();
+      render();
+      showToast(`تم تغيير نظام الدرجة للصف (${stg.name}) إلى (من ${stg.maxGrade}) ✅`);
+    }
+
+    function deleteStage(stageId) {
+      const dept = getCurrentDept();
+      if (dept.stages.length <= 1) {
+        showToast("يجب بقاء صف واحد على الأقل في المرحلة ⚠️");
+        return;
+      }
+      dept.stages = dept.stages.filter(s => s.id !== stageId);
+      state.globalStage = dept.stages[0].id;
+      saveState();
+      render();
+    }
+
+    function addSubject() {
+      const name = (document.getElementById("newSubInput")?.value || "").trim();
+      if (!name) return;
+      const stg = getCurrentStage();
+      if (!stg.subjects.includes(name)) stg.subjects.push(name);
+      state.globalSub = name;
+      saveState();
+      render();
+    }
+
+    function deleteSubject(sub) {
+      const stg = getCurrentStage();
+      if (stg.subjects.length <= 1) return;
+      stg.subjects = stg.subjects.filter(s => s !== sub);
+      state.globalSub = stg.subjects[0];
+      saveState();
+      render();
+    }
+
+    function addSection() {
+      const name = (document.getElementById("newSecInput")?.value || "").trim();
+      if (!name) return;
+      const stg = getCurrentStage();
+      if (!stg.sections.includes(name)) stg.sections.push(name);
+      saveState();
+      render();
+    }
+
+    function deleteSection(sec) {
+      const stg = getCurrentStage();
+      if (stg.sections.length <= 1) return;
+      stg.sections = stg.sections.filter(s => s !== sec);
+      saveState();
+      render();
+    }
+
+    function savePinCode() {
+      const pin = (document.getElementById("pinSetInput")?.value || "").trim();
+      state.savedPin = pin;
+      saveState();
+      showToast(pin ? "تم تفعيل رمز القفل PIN بنجاح 🔐" : "تم إلغاء قفل التطبيق 🔓");
+    }
+
+    function checkPinUnlock(val) {
+      if (val === state.savedPin) {
+        state.isLocked = false;
+        document.getElementById("pinLockOverlay").style.display = "none";
+      } else if (val.length >= state.savedPin.length) {
+        document.getElementById("pinUnlockError").style.display = "block";
+      }
+    }
+
+    function exportBackupJson() {
+      const blob = new Blob([JSON.stringify(state, null, 2)], { type: "application/json" });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = `bousalat_alustadh_backup_v4.4_${todayIso()}.json`;
+      a.click();
+      showToast("تم تصدير النسخة الاحتياطية بنجاح 💾");
+    }
+
+    function importBackupJson(ev) {
+      const file = ev.target.files?.[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = () => {
+        try {
+          const parsed = JSON.parse(String(reader.result || "{}"));
+          state = Object.assign({}, state, parsed);
+          saveState();
+          applyTheme();
+          render();
+          showToast("تمت استعادة النسخة الاحتياطية بنجاح ✅");
+        } catch (e) {
+          showToast("ملف النسخة الاحتياطية غير صالح ❌");
+        }
+      };
+      reader.readAsText(file);
+    }
+
+    function openAcademicYearResetModal() {
+      openModal(`
+        <div>
+          <h3 style="margin:0 0 8px;font-size:17px;font-weight:900;color:var(--rose-500);">⚠️ تصفير بيانات العام الدراسي</h3>
+          <p style="font-size:12px;color:var(--text-muted);font-weight:700;margin-bottom:14px;">اختر نوع التصفير المطلوب للعام الدراسي الجديد:</p>
+          <div style="display:flex;flex-direction:column;gap:10px;">
+            <button class="btn btn-amber" style="height:48px;" onclick="executeYearReset(false)">
+              1️⃣ تصفير الدرجات والغيابات فقط (مع إبقاء أسماء الطلاب)
+            </button>
+            <button class="btn btn-rose" style="height:48px;" onclick="executeYearReset(true)">
+              2️⃣ مسح شامل للدرجات والغيابات وحذف جميع أسماء الطلاب نهائياً
+            </button>
+            <button class="btn btn-sub" onclick="closeModal()">إلغاء</button>
+          </div>
+        </div>
+      `);
+    }
+
+    function executeYearReset(deleteStudentsToo) {
+      state.grades = {};
+      state.attendance = {};
+      state.missingHomework = {};
+      state.sectionNotes = {};
+      if (deleteStudentsToo) {
+        state.students = [];
+      }
+      saveState();
+      closeModal();
+      render();
+      showToast(deleteStudentsToo ? "تم المسح الشامل لجميع الطلاب والدرجات والغيابات 🗑️" : "تم تصفير الدرجات والغيابات مع الاحتفاظ بأسماء الطلاب ✅");
+    }
+
+    /*************************************************************************
+     * 7. SPEED GRADING STUDIO (1:1 Match with SpeedGradingScreen.kt)
+     *************************************************************************/
+    function openSpeedGrading(startIndex = 0) {
+      const list = getFilteredStudents();
+      if (list.length === 0) {
+        showToast("لا يوجد طلاب في القائمة الحالية للرصد ⚠️");
+        return;
+      }
+      state.speedConfig.activeIndex = Math.min(Math.max(0, startIndex), list.length - 1);
+      state.speedConfig.freshSelection = true;
+      const overlay = document.getElementById("speedGradingOverlay");
+      overlay.style.display = "block";
+      renderSpeedGradingStudio();
+    }
+
+    function closeSpeedGrading() {
+      document.getElementById("speedGradingOverlay").style.display = "none";
+      saveState();
+      render();
+    }
+
+    function getSpeedFieldKey(tab, subIdx) {
+      if (tab === "m1") return ["v1", "v2", "v3"][subIdx];
+      if (tab === "m2") return ["v4", "v5", "v6"][subIdx];
+      if (tab === "m3") return ["v7", "v8", "v9"][subIdx];
+      if (tab === "m4") return ["v10", "v11", "v12"][subIdx];
+      if (tab === "mid") return "mid";
+      if (tab === "final") return "final";
+      return "secondRound";
+    }
+
+    function renderSpeedGradingStudio() {
+      const overlay = document.getElementById("speedGradingOverlay");
+      if (!overlay || overlay.style.display === "none") return;
+
+      const list = getFilteredStudents();
+      const idx = Math.min(Math.max(0, state.speedConfig.activeIndex), Math.max(0, list.length - 1));
+      const std = list[idx];
+      if (!std) {
+        closeSpeedGrading();
+        return;
+      }
+
+      const activeSub = getActiveSub();
+      const maxG = getMaxAllowedGrade();
+      const g = getSubjectGrades(std.id, activeSub);
+      const res = calculateResult(std.id, activeSub);
+      const tab = state.speedConfig.activeTab;
+      const isMonthly = ["m1", "m2", "m3", "m4"].includes(tab);
+      const subIdx = state.speedConfig.activeSubFieldIdx;
+      const activeKey = getSpeedFieldKey(tab, subIdx);
+      const curVal = g[activeKey] || "";
+
+      const tabs = [
+        { id: "m1", label: "ف1 - ش1" },
+        { id: "m2", label: "ف1 - ش2" },
+        { id: "mid", label: "نصف السنة" },
+        { id: "m3", label: "ف2 - ش1" },
+        { id: "m4", label: "ف2 - ش2" },
+        { id: "final", label: "النهائي" },
+        { id: "secondRound", label: "دور ثانٍ" }
+      ];
+
+      overlay.innerHTML = `
+        <div class="container" style="padding-bottom:24px;">
+          <!-- Header -->
+          <div class="row-between">
+            <div>
+              <div style="font-size:15px;font-weight:900;">⚡ استوديو الرصد السريع الذكي</div>
+              <div style="font-size:11px;color:var(--indigo-400);font-weight:800;">${getCurrentStage().name} • مادة ${activeSub} (من ${maxG})</div>
+            </div>
+            <button class="btn btn-rose" style="padding:7px 12px;" onclick="closeSpeedGrading()">إغلاق وحفظ ✓</button>
+          </div>
+
+          <!-- Period Selector Tabs -->
+          <div class="scroll-row">
+            ${tabs.map(t => `
+              <button class="chip ${t.id === tab ? "active" : ""}" onclick="state.speedConfig.activeTab='${t.id}';state.speedConfig.activeSubFieldIdx=0;state.speedConfig.freshSelection=true;renderSpeedGradingStudio();">
+                ${t.label}
+              </button>
+            `).join("")}
+          </div>
+
+          <!-- Student Switcher Banner -->
+          <div class="hero-card" style="padding:14px;">
+            <div class="row-between">
+              <button class="btn btn-sub" onclick="if(state.speedConfig.activeIndex>0){state.speedConfig.activeIndex--;state.speedConfig.freshSelection=true;renderSpeedGradingStudio();}">➡️ السابق</button>
+              <div style="text-align:center;">
+                <div style="font-size:11px;color:#C7D2FE;font-weight:800;">الطالب ${idx + 1} من ${list.length} • شعبة (${std.section})</div>
+                <div style="font-size:18px;font-weight:900;margin-top:2px;">${escapeHtml(std.name)}</div>
+                ${std.isIntisab ? `<span class="badge badge-intosab" style="margin-top:4px;">🏠 طالب انتساب</span>` : ""}
+              </div>
+              <button class="btn btn-sub" onclick="if(state.speedConfig.activeIndex<${list.length - 1}){state.speedConfig.activeIndex++;state.speedConfig.freshSelection=true;renderSpeedGradingStudio();}">التالي ⬅️</button>
+            </div>
+          </div>
+
+          <!-- Active Grade Input Boxes -->
+          ${isMonthly ? (() => {
+            const kDaily = getSpeedFieldKey(tab, 0);
+            const kPrac = getSpeedFieldKey(tab, 1);
+            const kWrit = getSpeedFieldKey(tab, 2);
+            const sumM = Math.min(maxG, (parseGradeInt(g[kDaily]) || 0) + (parseGradeInt(g[kPrac]) || 0) + (parseGradeInt(g[kWrit]) || 0));
+            return `
+              <div class="grid-4">
+                ${[
+                  { i: 0, title: "اليومي", k: kDaily },
+                  { i: 1, title: "العملي", k: kPrac },
+                  { i: 2, title: "التحريري", k: kWrit }
+                ].map(box => `
+                  <div class="card" style="text-align:center;padding:10px;cursor:pointer;border:2px solid ${subIdx === box.i ? "var(--indigo-400)" : "var(--border-color)"};" onclick="state.speedConfig.activeSubFieldIdx=${box.i};state.speedConfig.freshSelection=true;renderSpeedGradingStudio();">
+                    <div style="font-size:11px;font-weight:800;color:var(--text-muted);">${box.title}</div>
+                    <div style="font-size:22px;font-weight:900;margin-top:4px;">${g[box.k] !== "" ? g[box.k] : "-"}</div>
+                  </div>
+                `).join("")}
+                <div class="card" style="text-align:center;padding:10px;background:rgba(99,102,241,0.14);border-color:var(--indigo-400);">
+                  <div style="font-size:11px;font-weight:800;color:var(--indigo-400);">مجموع الشهر</div>
+                  <div style="font-size:22px;font-weight:900;color:var(--indigo-400);margin-top:4px;">${sumM}</div>
+                </div>
+              </div>
+            `;
+          })() : `
+            <div class="card" style="text-align:center;border:2px solid var(--indigo-400);">
+              <div style="font-size:12px;font-weight:800;color:var(--text-muted);">درجة الامتحان (${tabs.find(x => x.id === tab)?.label}) من ${maxG}</div>
+              <div style="font-size:32px;font-weight:900;color:var(--indigo-400);margin-top:4px;">${curVal !== "" ? curVal : "-"}</div>
+            </div>
+          `}
+
+          <!-- Voice Input & Auto-Advance Strip -->
+          <div class="row-between">
+            <button class="btn btn-purple" style="flex:1;" onclick="startWebVoiceGrading()">🎙️ نطق الدرجة صوتياً</button>
+            <button class="chip ${state.speedConfig.autoAdvance ? "active-emerald" : ""}" onclick="state.speedConfig.autoAdvance=!state.speedConfig.autoAdvance;renderSpeedGradingStudio();">
+              ⚡ انتقال تلقائي: ${state.speedConfig.autoAdvance ? "مفعل" : "متوقف"}
+            </button>
+          </div>
+
+          <!-- Built-In Custom Numeric Keypad (Matching SpeedGradingScreen.kt) -->
+          <div class="card" style="padding:10px;display:flex;flex-direction:column;gap:6px;">
+            <div class="grid-4">
+              ${[1, 2, 3].map(d => `<button class="speed-key" onclick="onSpeedKeypadDigit(${d})">${d}</button>`).join("")}
+              <button class="speed-key" style="color:var(--rose-500);font-size:13px;" onclick="onSpeedKeypadClear()">مسح ⌫</button>
+            </div>
+            <div class="grid-4">
+              ${[4, 5, 6].map(d => `<button class="speed-key" onclick="onSpeedKeypadDigit(${d})">${d}</button>`).join("")}
+              <button class="speed-key" style="color:var(--amber-400);font-size:13px;" onclick="openBonusModal('${std.id}')">⭐ مكافأة</button>
+            </div>
+            <div class="grid-4">
+              ${[7, 8, 9].map(d => `<button class="speed-key" onclick="onSpeedKeypadDigit(${d})">${d}</button>`).join("")}
+              <button class="speed-key" style="color:var(--indigo-400);" onclick="onSpeedKeypadDigit(0)">0</button>
+            </div>
+            <div class="row-between" style="gap:6px;">
+              ${maxG === 10 ? `<button class="btn btn-emerald" style="flex:1;height:46px;" onclick="onSpeedSetDirectValue('10')">10 كاملة 🌟</button>` : `<button class="btn btn-emerald" style="flex:1;height:46px;" onclick="onSpeedSetDirectValue('100')">100 كاملة 🌟</button>`}
+              <button class="btn btn-indigo" style="flex:2;height:46px;font-size:14px;" onclick="advanceSpeedField()">التالي ⬅️</button>
+            </div>
+          </div>
+        </div>
+      `;
+    }
+
+    function onSpeedKeypadDigit(digit) {
+      const list = getFilteredStudents();
+      const std = list[state.speedConfig.activeIndex];
+      if (!std) return;
+      const activeSub = getActiveSub();
+      const maxG = getMaxAllowedGrade();
+      const g = getSubjectGrades(std.id, activeSub);
+      const key = getSpeedFieldKey(state.speedConfig.activeTab, state.speedConfig.activeSubFieldIdx);
+
+      const prev = state.speedConfig.freshSelection ? "" : String(g[key] || "");
+      const candidate = prev === "0" ? String(digit) : (prev + String(digit));
+      const num = parseInt(candidate, 10);
+
+      if (num > maxG) {
+        showToast(`⚠️ الحد الأعلى للدرجة في هذا الصف هو (${maxG})`);
+        return;
+      }
+
+      g[key] = String(num);
+      state.speedConfig.freshSelection = false;
+      saveState();
+
+      // Auto advance if 2 digits entered (for maxG=100) or 1 digit >=2 (for maxG=10)
+      if (state.speedConfig.autoAdvance) {
+        if ((maxG === 10 && (num >= 2 || candidate.length >= 2)) || (maxG === 100 && candidate.length >= 2)) {
+          advanceSpeedField();
+          return;
+        }
+      }
+      renderSpeedGradingStudio();
+    }
+
+    function onSpeedSetDirectValue(valStr) {
+      const list = getFilteredStudents();
+      const std = list[state.speedConfig.activeIndex];
+      if (!std) return;
+      const g = getSubjectGrades(std.id, getActiveSub());
+      const key = getSpeedFieldKey(state.speedConfig.activeTab, state.speedConfig.activeSubFieldIdx);
+      g[key] = valStr;
+      saveState();
+      if (state.speedConfig.autoAdvance) advanceSpeedField();
+      else renderSpeedGradingStudio();
+    }
+
+    function onSpeedKeypadClear() {
+      const list = getFilteredStudents();
+      const std = list[state.speedConfig.activeIndex];
+      if (!std) return;
+      const g = getSubjectGrades(std.id, getActiveSub());
+      const key = getSpeedFieldKey(state.speedConfig.activeTab, state.speedConfig.activeSubFieldIdx);
+      g[key] = "";
+      state.speedConfig.freshSelection = true;
+      saveState();
+      renderSpeedGradingStudio();
+    }
+
+    function advanceSpeedField() {
+      const list = getFilteredStudents();
+      const isMonthly = ["m1", "m2", "m3", "m4"].includes(state.speedConfig.activeTab);
+      state.speedConfig.freshSelection = true;
+      if (isMonthly && state.speedConfig.activeSubFieldIdx < 2) {
+        state.speedConfig.activeSubFieldIdx++;
+      } else {
+        state.speedConfig.activeSubFieldIdx = 0;
+        if (state.speedConfig.activeIndex + 1 < list.length) {
+          state.speedConfig.activeIndex++;
+        } else {
+          showToast("اكتمل رصد جميع طلاب القائمة بنجاح 🎉");
+        }
+      }
+      renderSpeedGradingStudio();
+    }
+
+    function startWebVoiceGrading() {
+      const SpeechRec = window.SpeechRecognition || window.webkitSpeechRecognition;
+      if (!SpeechRec) {
+        const manual = prompt("🎙️ أدخل الدرجة أو 3 درجات مفصولة بمسافة (يومي عملي تحريري):");
+        if (manual) applySpokenGradeString(manual);
+        return;
+      }
+      const rec = new SpeechRec();
+      rec.lang = "ar-IQ";
+      rec.interimResults = false;
+      showToast("🎙️ تفضل بنطق الدرجة الآن...");
+      rec.onresult = (ev) => {
+        const transcript = ev.results?.[0]?.[0]?.transcript || "";
+        applySpokenGradeString(transcript);
+      };
+      rec.onerror = () => showToast("تعذر التقاط الصوت، حاول مرة أخرى 🎙️");
+      rec.start();
+    }
+
+    function applySpokenGradeString(text) {
+      const nums = (text.match(/\d+/g) || []).map(n => parseInt(n, 10));
+      if (nums.length === 0) {
+        showToast(`لم يتم التعرف على رقم في: (${text})`);
+        return;
+      }
+      const list = getFilteredStudents();
+      const std = list[state.speedConfig.activeIndex];
+      if (!std) return;
+      const g = getSubjectGrades(std.id, getActiveSub());
+      const tab = state.speedConfig.activeTab;
+      const isMonthly = ["m1", "m2", "m3", "m4"].includes(tab);
+
+      if (isMonthly && nums.length >= 3) {
+        g[getSpeedFieldKey(tab, 0)] = String(nums[0]);
+        g[getSpeedFieldKey(tab, 1)] = String(nums[1]);
+        g[getSpeedFieldKey(tab, 2)] = String(nums[2]);
+        saveState();
+        advanceSpeedField();
+      } else {
+        onSpeedSetDirectValue(String(nums[0]));
+      }
+    }
+
+    /*************************************************************************
+     * 8. OFFICIAL PRINT PREVIEW STUDIO (1:1 Match with OfficialPrintPreviewScreen)
+     *************************************************************************/
+    function openPrintStudio(defaultTemplate = "annual") {
+      state.printConfig.templateType = defaultTemplate;
+      const overlay = document.getElementById("printStudioOverlay");
+      overlay.style.display = "block";
+      renderPrintStudio();
+    }
+
+    function closePrintStudio() {
+      document.getElementById("printStudioOverlay").style.display = "none";
+    }
+
+    function renderPrintStudio() {
+      const overlay = document.getElementById("printStudioOverlay");
+      if (!overlay || overlay.style.display === "none") return;
+
+      const cfg = state.printConfig;
+      const dept = getCurrentDept();
+      const stage = getCurrentStage();
+      const activeSub = getActiveSub();
+      const maxG = getMaxAllowedGrade();
+      const failThresh = getFailThreshold();
+      const rawStudents = getFilteredStudents();
+      const stats = calculateStats(rawStudents);
+
+      // Sort students according to cfg.sortOrder
+      let sorted = [...rawStudents];
+      if (cfg.sortOrder === "top_score") {
+        sorted.sort((a, b) => {
+          const ra = calculateResult(a.id, activeSub);
+          const rb = calculateResult(b.id, activeSub);
+          const sa = ra.secondRoundResult ?? (ra.hasFinalResult ? ra.finalResult : Math.min(maxG, ra.saei + ra.qarar));
+          const sb = rb.secondRoundResult ?? (rb.hasFinalResult ? rb.finalResult : Math.min(maxG, rb.saei + rb.qarar));
+          return sb - sa;
+        });
+      } else if (cfg.sortOrder === "passed_only") {
+        sorted = sorted.filter(s => {
+          const r = calculateResult(s.id, activeSub);
+          const sc = r.secondRoundResult ?? (r.hasFinalResult ? r.finalResult : Math.min(maxG, r.saei + r.qarar));
+          return r.hasSaei && sc >= failThresh;
+        });
+      } else if (cfg.sortOrder === "failed_only") {
+        sorted = sorted.filter(s => {
+          const r = calculateResult(s.id, activeSub);
+          const sc = r.secondRoundResult ?? (r.hasFinalResult ? r.finalResult : Math.min(maxG, r.saei + r.qarar));
+          return r.hasSaei && sc < failThresh;
+        });
+      } else {
+        sorted.sort((a, b) => a.name.localeCompare(b.name, "ar"));
+      }
+
+      const monthLabels = {
+        m1: "الفصل الأول - الشهر الأول",
+        m2: "الفصل الأول - الشهر الثاني",
+        m3: "الفصل الثاني - الشهر الأول",
+        m4: "الفصل الثاني - الشهر الثاني"
+      };
+
+      const reportTitle = cfg.templateType === "monthly"
+        ? `سجل المتابعة اليومي والشهري التفصيلي (${monthLabels[cfg.monthKey] || ""})`
+        : cfg.templateType === "attendance"
+          ? "سجل الحضور والغياب والإنذارات الوزاري الرسمي"
+          : cfg.templateType === "blank_roster"
+            ? "سجل الرصد الورقي الفارغ (قائمة الدرجات والمتابعة الصفية)"
+            : "سجل درجات الطلاب السنوي الشامل";
+
+      const borderCol = cfg.colorTheme ? "#4F46E5" : "#000000";
+      const hdrBg = cfg.colorTheme ? "#EEF2FF" : "#F1F5F9";
+
+      let tableHtml = "";
+      if (cfg.templateType === "monthly") {
+        const mIdx = parseInt(cfg.monthKey.replace("m", ""), 10) || 1;
+        const startF = (mIdx - 1) * 3 + 1;
+        tableHtml = `
+          <table style="width:100%;border-collapse:collapse;font-size:11px;text-align:center;border:2px solid ${borderCol};">
+            <thead>
+              <tr style="background:${hdrBg};">
+                <th style="border:1px solid #000;padding:6px;">ت</th>
+                <th style="border:1px solid #000;padding:6px;text-align:right;">اسم الطالب الرباعي</th>
+                <th style="border:1px solid #000;padding:6px;">الشعبة</th>
+                <th style="border:1px solid #000;padding:6px;">اليومي</th>
+                <th style="border:1px solid #000;padding:6px;">العملي</th>
+                <th style="border:1px solid #000;padding:6px;">التحريري</th>
+                <th style="border:1px solid #000;padding:6px;">المجموع (${maxG})</th>
+                <th style="border:1px solid #000;padding:6px;">الواجبات</th>
+                <th style="border:1px solid #000;padding:6px;">الغيابات</th>
+                <th style="border:1px solid #000;padding:6px;">التقدير</th>
+              </tr>
+            </thead>
+            <tbody>
+              ${sorted.map((s, i) => {
+                const g = getSubjectGrades(s.id, activeSub);
+                const vd = parseGradeInt(g["v" + startF]);
+                const vp = parseGradeInt(g["v" + (startF + 1)]);
+                const vw = parseGradeInt(g["v" + (startF + 2)]);
+                const hasAny = vd !== null || vp !== null || vw !== null;
+                const sum = Math.min(maxG, (vd || 0) + (vp || 0) + (vw || 0));
+                const hwMiss = state.missingHomework[`${s.id}_${activeSub}`] || 0;
+                const absCount = Object.keys(state.attendance).filter(k => k.startsWith(s.id + "_") && state.attendance[k] === "absent").length;
+                const evalTxt = !hasAny ? "-" : sum >= maxG * 0.9 ? "امتياز 🌟" : sum >= maxG * 0.8 ? "جيد جداً" : sum >= maxG * 0.7 ? "جيد" : sum >= failThresh ? "متوسط" : "ضعيف ⚠️";
+                return `
+                  <tr style="background:${cfg.colorTheme && i % 2 === 1 ? "#F8FAFC" : "#FFFFFF"};">
+                    <td style="border:1px solid #000;padding:5px;">${i + 1}</td>
+                    <td style="border:1px solid #000;padding:5px;text-align:right;font-weight:800;">${escapeHtml(s.name)} ${s.isIntisab ? "(انتساب)" : ""}</td>
+                    <td style="border:1px solid #000;padding:5px;">${s.section}</td>
+                    <td style="border:1px solid #000;padding:5px;">${vd ?? "-"}</td>
+                    <td style="border:1px solid #000;padding:5px;">${vp ?? "-"}</td>
+                    <td style="border:1px solid #000;padding:5px;">${vw ?? "-"}</td>
+                    <td style="border:1px solid #000;padding:5px;font-weight:900;">${hasAny ? sum : "-"}</td>
+                    <td style="border:1px solid #000;padding:5px;">${hwMiss > 0 ? `${hwMiss} نقص` : "ملتزم ✓"}</td>
+                    <td style="border:1px solid #000;padding:5px;">${s.isIntisab ? "انتساب" : absCount}</td>
+                    <td style="border:1px solid #000;padding:5px;font-weight:800;">${evalTxt}</td>
+                  </tr>
+                `;
+              }).join("")}
+            </tbody>
+          </table>
+        `;
+      } else if (cfg.templateType === "attendance") {
+        tableHtml = `
+          <table style="width:100%;border-collapse:collapse;font-size:11px;text-align:center;border:2px solid ${borderCol};">
+            <thead>
+              <tr style="background:${hdrBg};">
+                <th style="border:1px solid #000;padding:6px;">ت</th>
+                <th style="border:1px solid #000;padding:6px;text-align:right;">اسم الطالب</th>
+                <th style="border:1px solid #000;padding:6px;">الشعبة</th>
+                <th style="border:1px solid #000;padding:6px;">حالة اليوم (${state.attendanceDate})</th>
+                <th style="border:1px solid #000;padding:6px;">الغياب الكلي</th>
+                <th style="border:1px solid #000;padding:6px;">الإجازات</th>
+                <th style="border:1px solid #000;padding:6px;">حالة الإنذار الوزاري</th>
+                <th style="border:1px solid #000;padding:6px;">هاتف ولي الأمر</th>
+              </tr>
+            </thead>
+            <tbody>
+              ${sorted.map((s, i) => {
+                const absCount = Object.keys(state.attendance).filter(k => k.startsWith(s.id + "_") && state.attendance[k] === "absent").length;
+                const excCount = Object.keys(state.attendance).filter(k => k.startsWith(s.id + "_") && state.attendance[k] === "excused").length;
+                const todaySt = state.attendance[`${s.id}_${state.attendanceDate}`] || "present";
+                const todayTxt = s.isIntisab ? "انتساب 🏠" : todaySt === "absent" ? "غائب ❌" : todaySt === "excused" ? "إجازة 🕒" : "حاضر ✅";
+                const warnTxt = s.isIntisab ? "معفي من الدوام (انتساب)" : absCount >= 21 ? "فصل بالغياب ⛔" : absCount >= 7 ? `إنذار نهائي (${absCount}) ⛔` : absCount >= 5 ? `إنذار ثاني (${absCount}) 🚨` : absCount >= 3 ? `إنذار أول (${absCount}) ⚠️` : "ملتزم ✅";
+                return `
+                  <tr style="background:${cfg.colorTheme && i % 2 === 1 ? "#F8FAFC" : "#FFFFFF"};">
+                    <td style="border:1px solid #000;padding:5px;">${i + 1}</td>
+                    <td style="border:1px solid #000;padding:5px;text-align:right;font-weight:800;">${escapeHtml(s.name)}</td>
+                    <td style="border:1px solid #000;padding:5px;">${s.section}</td>
+                    <td style="border:1px solid #000;padding:5px;font-weight:800;">${todayTxt}</td>
+                    <td style="border:1px solid #000;padding:5px;">${s.isIntisab ? "-" : absCount}</td>
+                    <td style="border:1px solid #000;padding:5px;">${s.isIntisab ? "-" : excCount}</td>
+                    <td style="border:1px solid #000;padding:5px;font-weight:800;">${warnTxt}</td>
+                    <td style="border:1px solid #000;padding:5px;">${s.phone || "-"}</td>
+                  </tr>
+                `;
+              }).join("")}
+            </tbody>
+          </table>
+        `;
+      } else if (cfg.templateType === "blank_roster") {
+        const cols = cfg.blankColumnsCount || 8;
+        tableHtml = `
+          <table style="width:100%;border-collapse:collapse;font-size:11px;text-align:center;border:2px solid ${borderCol};">
+            <thead>
+              <tr style="background:${hdrBg};">
+                <th style="border:1px solid #000;padding:6px;">ت</th>
+                <th style="border:1px solid #000;padding:6px;text-align:right;">اسم الطالب</th>
+                <th style="border:1px solid #000;padding:6px;">الشعبة</th>
+                ${Array.from({ length: cols }, (_, c) => `<th style="border:1px solid #000;padding:6px;">حقل ${c + 1}</th>`).join("")}
+                <th style="border:1px solid #000;padding:6px;">الملاحظات</th>
+              </tr>
+            </thead>
+            <tbody>
+              ${sorted.map((s, i) => `
+                <tr style="background:${cfg.colorTheme && i % 2 === 1 ? "#F8FAFC" : "#FFFFFF"};">
+                  <td style="border:1px solid #000;padding:6px;">${i + 1}</td>
+                  <td style="border:1px solid #000;padding:6px;text-align:right;font-weight:800;">${escapeHtml(s.name)}</td>
+                  <td style="border:1px solid #000;padding:6px;">${s.section}</td>
+                  ${Array.from({ length: cols }, () => `<td style="border:1px solid #000;padding:6px;">&nbsp;</td>`).join("")}
+                  <td style="border:1px solid #000;padding:6px;">${s.isIntisab ? "انتساب" : ""}</td>
+                </tr>
+              `).join("")}
+            </tbody>
+          </table>
+        `;
+      } else {
+        // Annual 14-Column Ledger
+        tableHtml = `
+          <table style="width:100%;border-collapse:collapse;font-size:10px;text-align:center;border:2px solid ${borderCol};">
+            <thead>
+              <tr style="background:${hdrBg};">
+                <th style="border:1px solid #000;padding:5px;">ت</th>
+                <th style="border:1px solid #000;padding:5px;text-align:right;">اسم الطالب</th>
+                <th style="border:1px solid #000;padding:5px;">ف1 ش1</th>
+                <th style="border:1px solid #000;padding:5px;">ف1 ش2</th>
+                <th style="border:1px solid #000;padding:5px;">معدل ف1</th>
+                <th style="border:1px solid #000;padding:5px;">نصف السنة</th>
+                <th style="border:1px solid #000;padding:5px;">ف2 ش1</th>
+                <th style="border:1px solid #000;padding:5px;">ف2 ش2</th>
+                <th style="border:1px solid #000;padding:5px;">معدل ف2</th>
+                <th style="border:1px solid #000;padding:5px;">السعي السنوي</th>
+                <th style="border:1px solid #000;padding:5px;">النهائي</th>
+                <th style="border:1px solid #000;padding:5px;">قرار</th>
+                <th style="border:1px solid #000;padding:5px;">دور ثان</th>
+                <th style="border:1px solid #000;padding:5px;">النتيجة</th>
+              </tr>
+            </thead>
+            <tbody>
+              ${sorted.map((s, i) => {
+                const r = calculateResult(s.id, activeSub);
+                const effSaei = Math.min(maxG, r.saei + r.qarar);
+                const finalSc = r.secondRoundResult ?? (r.hasFinalResult ? r.finalResult : effSaei);
+                const pass = finalSc >= failThresh;
+                return `
+                  <tr style="background:${cfg.colorTheme && i % 2 === 1 ? "#F8FAFC" : "#FFFFFF"};">
+                    <td style="border:1px solid #000;padding:4px;">${i + 1}</td>
+                    <td style="border:1px solid #000;padding:4px;text-align:right;font-weight:800;">${escapeHtml(s.name)} (${s.section}) ${s.isIntisab ? "🏠" : ""}</td>
+                    <td style="border:1px solid #000;padding:4px;">${r.hasM1 ? r.m1 : "-"}</td>
+                    <td style="border:1px solid #000;padding:4px;">${r.hasM2 ? r.m2 : "-"}</td>
+                    <td style="border:1px solid #000;padding:4px;font-weight:800;">${r.hasAvg1 ? r.avg1 : "-"}</td>
+                    <td style="border:1px solid #000;padding:4px;">${r.hasMid ? r.mid : "-"}</td>
+                    <td style="border:1px solid #000;padding:4px;">${r.hasM3 ? r.m3 : "-"}</td>
+                    <td style="border:1px solid #000;padding:4px;">${r.hasM4 ? r.m4 : "-"}</td>
+                    <td style="border:1px solid #000;padding:4px;font-weight:800;">${r.hasAvg2 ? r.avg2 : "-"}</td>
+                    <td style="border:1px solid #000;padding:4px;font-weight:900;">${r.isExempt ? "✨ معفي" : r.hasSaei ? effSaei : "-"}</td>
+                    <td style="border:1px solid #000;padding:4px;">${r.hasFinal ? r.finalExam : "-"}</td>
+                    <td style="border:1px solid #000;padding:4px;">${r.qarar > 0 ? `+${r.qarar}` : "-"}</td>
+                    <td style="border:1px solid #000;padding:4px;">${r.hasSecondRound ? r.secondRoundExam : "-"}</td>
+                    <td style="border:1px solid #000;padding:4px;font-weight:900;color:${!r.hasSaei ? "#000" : pass ? "#047857" : "#E11D48"};">${!r.hasSaei ? "-" : pass ? "ناجح ✓" : "راسب"}</td>
+                  </tr>
+                `;
+              }).join("")}
+            </tbody>
+          </table>
+        `;
+      }
+
+      overlay.innerHTML = `
+        <!-- Top Dark Command Header -->
+        <div style="background:#0F172A;color:#fff;padding:12px;">
+          <div class="row-between" style="margin-bottom:8px;">
+            <div>
+              <div style="font-size:14px;font-weight:900;">🖨️ استوديو الطباعة والتقارير الرسمية</div>
+              <div style="font-size:11px;color:#818CF8;font-weight:700;">${dept.name} • ${stage.name} (${sorted.length} طالب)</div>
+            </div>
+            <div class="row-wrap">
+              <button class="btn btn-indigo" style="padding:6px 10px;font-size:11px;" onclick="state.printConfig.panelExpanded=!state.printConfig.panelExpanded;renderPrintStudio();">
+                ${cfg.panelExpanded ? "إخفاء الإعدادات ▲" : "تخصيص السجل ⚙️"}
+              </button>
+              <button class="btn btn-rose" style="padding:6px 10px;font-size:11px;" onclick="closePrintStudio()">إغلاق ✕</button>
+            </div>
+          </div>
+          <div class="grid-3">
+            <button class="btn btn-indigo" onclick="window.print()">🖨️ طباعة / حفظ PDF</button>
+            <button class="btn btn-emerald" onclick="exportExcelCsv()">📊 تصدير Excel</button>
+            <button class="btn btn-teal" onclick="shareDailyAttendanceSummary()">📤 مشاركة السجل</button>
+          </div>
+        </div>
+
+        ${cfg.panelExpanded ? `
+          <div style="background:#ffffff;border-bottom:1px solid #CBD5E1;padding:10px 12px;display:flex;flex-direction:column;gap:8px;">
+            <div class="scroll-row">
+              ${[
+                { k: "annual", l: "📊 السجل السنوي (14 عموداً)" },
+                { k: "monthly", l: "📝 سجل المتابعة الشهري" },
+                { k: "attendance", l: "📅 سجل الغياب والإنذارات" },
+                { k: "blank_roster", l: "🗒️ سجل ورقي فارغ للرصد" }
+              ].map(t => `
+                <button class="chip ${cfg.templateType === t.k ? "active" : ""}" style="color:${cfg.templateType === t.k ? "#fff" : "#0F172A"};background:${cfg.templateType === t.k ? "#4F46E5" : "#F1F5F9"};" onclick="state.printConfig.templateType='${t.k}';renderPrintStudio();">${t.l}</button>
+              `).join("")}
+            </div>
+
+            ${cfg.templateType === "monthly" ? `
+              <div class="scroll-row">
+                ${[
+                  { k: "m1", l: "فصل 1 - شهر 1" },
+                  { k: "m2", l: "فصل 1 - شهر 2" },
+                  { k: "m3", l: "فصل 2 - شهر 1" },
+                  { k: "m4", l: "فصل 2 - شهر 2" }
+                ].map(m => `
+                  <button class="chip ${cfg.monthKey === m.k ? "active-purple" : ""}" style="color:${cfg.monthKey === m.k ? "#fff" : "#0F172A"};background:${cfg.monthKey === m.k ? "#9333EA" : "#F1F5F9"};" onclick="state.printConfig.monthKey='${m.k}';renderPrintStudio();">${m.l}</button>
+                `).join("")}
+              </div>
+            ` : cfg.templateType === "blank_roster" ? `
+              <div class="scroll-row">
+                ${[6, 8, 10, 12].map(cols => `
+                  <button class="chip ${cfg.blankColumnsCount === cols ? "active-purple" : ""}" style="color:${cfg.blankColumnsCount === cols ? "#fff" : "#0F172A"};background:${cfg.blankColumnsCount === cols ? "#9333EA" : "#F1F5F9"};" onclick="state.printConfig.blankColumnsCount=${cols};renderPrintStudio();">${cols} حقول فارغة</button>
+                `).join("")}
+              </div>
+            ` : ""}
+
+            <div class="scroll-row">
+              ${[
+                { k: "alpha", l: "🔤 أبجدي" },
+                { k: "top_score", l: "🏆 الأعلى درجة" },
+                { k: "passed_only", l: "✅ الناجحون فقط" },
+                { k: "failed_only", l: "⚠️ المكملون/الراسبون" }
+              ].map(sr => `
+                <button class="chip ${cfg.sortOrder === sr.k ? "active-amber" : ""}" style="background:${cfg.sortOrder === sr.k ? "#F59E0B" : "#F1F5F9"};color:${cfg.sortOrder === sr.k ? "#fff" : "#0F172A"};" onclick="state.printConfig.sortOrder='${sr.k}';renderPrintStudio();">${sr.l}</button>
+              `).join("")}
+              <button class="chip" style="background:#EEF2FF;color:#4F46E5;" onclick="state.printConfig.colorTheme=!state.printConfig.colorTheme;renderPrintStudio();">
+                ${cfg.colorTheme ? "🎨 ملون رسمي" : "⚫ ليزري أبيض وأسود"}
+              </button>
+              <button class="chip" style="background:#ECFDF5;color:#047857;" onclick="state.printConfig.showSupervisorSign=!state.printConfig.showSupervisorSign;renderPrintStudio();">
+                ${cfg.showSupervisorSign ? "👔 توقيع المشرف: مفعل" : "👔 + توقيع المشرف"}
+              </button>
+            </div>
+          </div>
+        ` : ""}
+
+        <!-- Live A4 Sheet Preview -->
+        <div style="padding:12px;">
+          <div id="printableArea" style="background:#ffffff;color:#000000;border:1px solid #CBD5E1;border-radius:8px;padding:14px;box-shadow:0 4px 12px rgba(0,0,0,0.08);overflow-x:auto;">
+            <!-- Official 3-Column Header -->
+            <div class="row-between" style="border-bottom:2px solid ${borderCol};padding-bottom:8px;margin-bottom:10px;align-items:flex-start;">
+              <div style="font-size:11px;font-weight:900;">
+                <div>${escapeHtml(state.settings.ministryName)}</div>
+                <div style="color:${borderCol};font-size:13px;">${escapeHtml(state.settings.schoolName)}</div>
+              </div>
+              <div style="text-align:center;">
+                <div style="font-size:13px;font-weight:900;text-decoration:underline;">${reportTitle}</div>
+                <div style="font-size:11px;font-weight:700;">العام الدراسي: ${escapeHtml(state.settings.academicYear)}</div>
+              </div>
+              <div style="text-align:left;font-size:11px;font-weight:900;">
+                <div>المرحلة: ${escapeHtml(dept.name)} / ${escapeHtml(stage.name)}</div>
+                <div style="color:${cfg.colorTheme ? "#9333EA" : "#000"};">الشعبة: ${state.globalSec || "الكل"} | المادة: ${escapeHtml(activeSub)}</div>
+              </div>
+            </div>
+
+            ${tableHtml}
+
+            <!-- Summary Table & Official Signatures -->
+            <table style="width:100%;border-collapse:collapse;font-size:10px;text-align:center;margin-top:12px;border:1px solid #000;">
+              <tr style="background:${hdrBg};font-weight:900;">
+                <td style="border:1px solid #000;padding:4px;">العدد الكلي</td>
+                <td style="border:1px solid #000;padding:4px;">المشتركون</td>
+                <td style="border:1px solid #000;padding:4px;">الناجحون</td>
+                <td style="border:1px solid #000;padding:4px;">المكملون / الراسبون</td>
+                <td style="border:1px solid #000;padding:4px;">نسبة النجاح</td>
+              </tr>
+              <tr style="font-weight:800;">
+                <td style="border:1px solid #000;padding:4px;">${stats.total}</td>
+                <td style="border:1px solid #000;padding:4px;">${stats.activeCount}</td>
+                <td style="border:1px solid #000;padding:4px;">${stats.passed}</td>
+                <td style="border:1px solid #000;padding:4px;">${stats.failed}</td>
+                <td style="border:1px solid #000;padding:4px;">${stats.rate}%</td>
+              </tr>
+            </table>
+
+            <div class="row-between" style="margin-top:18px;padding:0 12px;text-align:center;font-size:11px;font-weight:900;">
+              <div>
+                <div>توقيع مدرس المادة</div>
+                <div style="margin-top:6px;">${escapeHtml(state.settings.teacherName)}</div>
+              </div>
+              ${cfg.showSupervisorSign ? `
+                <div>
+                  <div>توقيع المشرف الاختصاصي</div>
+                  <div style="margin-top:6px;">.................................</div>
+                </div>
+              ` : ""}
+              <div>
+                <div>مصادقة وتوقيع مدير المدرسة</div>
+                <div style="margin-top:6px;">.................................</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      `;
+    }
+
+    function exportExcelCsv() {
+      const activeSub = getActiveSub();
+      const maxG = getMaxAllowedGrade();
+      const list = getFilteredStudents();
+      const rows = [
+        ["ت", "اسم الطالب", "الشعبة", "نظام الدوام", "ف1 ش1", "ف1 ش2", "معدل ف1", "نصف السنة", "ف2 ش1", "ف2 ش2", "معدل ف2", "السعي السنوي", "الامتحان النهائي", "درجة القرار", "الدور الثاني", "النتيجة النهائية"]
+      ];
+      list.forEach((s, i) => {
+        const r = calculateResult(s.id, activeSub);
+        const effSaei = Math.min(maxG, r.saei + r.qarar);
+        const finalSc = r.secondRoundResult ?? (r.hasFinalResult ? r.finalResult : effSaei);
+        rows.push([
+          i + 1,
+          s.name,
+          s.section,
+          s.isIntisab ? "انتساب" : "نظامي",
+          r.hasM1 ? r.m1 : "",
+          r.hasM2 ? r.m2 : "",
+          r.hasAvg1 ? r.avg1 : "",
+          r.hasMid ? r.mid : "",
+          r.hasM3 ? r.m3 : "",
+          r.hasM4 ? r.m4 : "",
+          r.hasAvg2 ? r.avg2 : "",
+          r.hasSaei ? effSaei : "",
+          r.hasFinal ? r.finalExam : "",
+          r.qarar || 0,
+          r.hasSecondRound ? r.secondRoundExam : "",
+          r.hasSaei ? finalSc : ""
+        ]);
+      });
+      const csv = "\uFEFF" + rows.map(r => r.map(c => `"${String(c).replace(/"/g, '""')}"`).join(",")).join("\n");
+      const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = `سجل_${getCurrentStage().name}_${activeSub}_${todayIso()}.csv`;
+      a.click();
+      showToast("تم تصدير ملف الإكسل (CSV) بنجاح 📊");
+    }
+
+    /*************************************************************************
+     * 9. MODALS: Profile, Homework, Bonus, Random Picker, Top Certificates, Activation
+     *************************************************************************/
+    function openModal(html) {
+      const c = document.getElementById("modalContent");
+      const b = document.getElementById("modalContainer");
+      if (c && b) {
+        c.innerHTML = html;
+        b.style.display = "flex";
+      }
+    }
+
+    function closeModal() {
+      const b = document.getElementById("modalContainer");
+      if (b) b.style.display = "none";
+    }
+
+    function openStudentProfileModal(stdId) {
+      const std = state.students.find(s => s.id === stdId);
+      if (!std) return;
+      const stage = getCurrentStage();
+      const maxG = getMaxAllowedGrade();
+      const totalAbs = Object.keys(state.attendance).filter(k => k.startsWith(std.id + "_") && state.attendance[k] === "absent").length;
+
+      openModal(`
+        <div>
+          <div class="row-between" style="margin-bottom:8px;">
+            <h3 style="margin:0;font-size:17px;font-weight:900;">👤 الملف الشامل للطالب</h3>
+            <button class="chip active-rose" onclick="closeModal()">إغلاق ✕</button>
+          </div>
+          <div style="font-size:16px;font-weight:900;color:var(--indigo-400);">${escapeHtml(std.name)}</div>
+          <div style="font-size:11px;color:var(--text-muted);font-weight:700;margin-bottom:10px;">
+            ${stage.name} • شعبة (${std.section}) • الغياب الكلي: ${std.isIntisab ? "معفي (انتساب 🏠)" : `${totalAbs} يوم`}
+          </div>
+
+          <!-- Intisab Status Switch inside Profile -->
+          <div style="background:rgba(168,85,247,0.12);border:1px solid rgba(192,132,252,0.45);border-radius:12px;padding:10px;margin-bottom:10px;" class="row-between">
+            <div>
+              <div style="font-size:12px;font-weight:900;color:#C084FC;">🏠 نظام الانتساب (الامتحانات فقط)</div>
+              <div style="font-size:10px;color:var(--text-muted);">إعفاء الطالب من تسجيل الحضور والغياب اليومي</div>
+            </div>
+            <button class="chip ${std.isIntisab ? "active-purple" : ""}" onclick="toggleStudentIntisab('${std.id}');openStudentProfileModal('${std.id}');">
+              ${std.isIntisab ? "انتساب مفعّل ✓" : "تحويل إلى انتساب"}
+            </button>
+          </div>
+
+          <!-- Behavior Tags -->
+          <div class="label-sm">🏷️ التقييم السلوكي والتربوي:</div>
+          <div class="row-wrap" style="margin-bottom:12px;">
+            ${BEHAVIOR_TAGS.map(tag => {
+              const has = (std.behaviorTags || []).includes(tag);
+              return `<button class="chip ${has ? "active" : ""}" onclick="toggleBehaviorTag('${std.id}','${tag}')">${tag}</button>`;
+            }).join("")}
+          </div>
+
+          <!-- All Subjects Summary Table -->
+          <div class="label-sm">📊 كشف درجات جميع المواد (${stage.name}):</div>
+          <div style="max-height:180px;overflow-y:auto;border:1px solid var(--border-color);border-radius:12px;margin-bottom:12px;">
+            <table style="width:100%;border-collapse:collapse;font-size:11px;text-align:center;">
+              <tr style="background:var(--bg-sub);font-weight:900;">
+                <th style="padding:6px;border-bottom:1px solid var(--border-color);text-align:right;">المادة</th>
+                <th style="padding:6px;border-bottom:1px solid var(--border-color);">ف1</th>
+                <th style="padding:6px;border-bottom:1px solid var(--border-color);">نصف السنة</th>
+                <th style="padding:6px;border-bottom:1px solid var(--border-color);">ف2</th>
+                <th style="padding:6px;border-bottom:1px solid var(--border-color);">السعي</th>
+                <th style="padding:6px;border-bottom:1px solid var(--border-color);">النهائي</th>
+              </tr>
+              ${stage.subjects.map(sub => {
+                const r = calculateResult(std.id, sub);
+                const effSaei = Math.min(maxG, r.saei + r.qarar);
+                return `
+                  <tr>
+                    <td style="padding:6px;border-bottom:1px solid var(--border-color);text-align:right;font-weight:800;">${sub}</td>
+                    <td style="padding:6px;border-bottom:1px solid var(--border-color);">${r.hasAvg1 ? r.avg1 : "-"}</td>
+                    <td style="padding:6px;border-bottom:1px solid var(--border-color);">${r.hasMid ? r.mid : "-"}</td>
+                    <td style="padding:6px;border-bottom:1px solid var(--border-color);">${r.hasAvg2 ? r.avg2 : "-"}</td>
+                    <td style="padding:6px;border-bottom:1px solid var(--border-color);font-weight:900;color:var(--indigo-400);">${r.hasSaei ? effSaei : "-"}</td>
+                    <td style="padding:6px;border-bottom:1px solid var(--border-color);font-weight:900;">${r.hasFinalResult ? r.finalResult : "-"}</td>
+                  </tr>
+                `;
+              }).join("")}
+            </table>
+          </div>
+
+          <div class="grid-2">
+            <button class="btn btn-emerald" onclick="shareStudentFullReportWhatsApp('${std.id}')">📲 إرسال بطاقة لولي الأمر</button>
+            <button class="btn btn-rose" onclick="deleteSingleStudent('${std.id}')">🗑️ حذف الطالب</button>
+          </div>
+        </div>
+      `);
+    }
+
+    function toggleBehaviorTag(stdId, tag) {
+      const s = state.students.find(x => x.id === stdId);
+      if (!s) return;
+      s.behaviorTags = s.behaviorTags || [];
+      const idx = s.behaviorTags.indexOf(tag);
+      if (idx >= 0) s.behaviorTags.splice(idx, 1);
+      else s.behaviorTags.push(tag);
+      saveState();
+      openStudentProfileModal(stdId);
+      render();
+    }
+
+    function deleteSingleStudent(stdId) {
+      state.students = state.students.filter(s => s.id !== stdId);
+      saveState();
+      closeModal();
+      render();
+      showToast("تم حذف الطالب بنجاح 🗑️");
+    }
+
+    function shareStudentFullReportWhatsApp(stdId) {
+      const s = state.students.find(x => x.id === stdId);
+      if (!s) return;
+      const activeSub = getActiveSub();
+      const r = calculateResult(s.id, activeSub);
+      const effSaei = Math.min(getMaxAllowedGrade(), r.saei + r.qarar);
+      const msg = [
+        `📄 *بطاقة متابعة الطالب الرسمية*`,
+        `👤 الاسم: ${s.name} (${s.isIntisab ? "انتساب" : `شعبة ${s.section}`})`,
+        `🏫 ${state.settings.schoolName} | المادة: ${activeSub}`,
+        `📊 معدل ف1: ${r.hasAvg1 ? r.avg1 : "-"} | نصف السنة: ${r.hasMid ? r.mid : "-"} | معدل ف2: ${r.hasAvg2 ? r.avg2 : "-"}`,
+        `⭐ السعي السنوي: ${r.hasSaei ? effSaei : "-"}`,
+        `مع تحيات مدرس المادة: ${state.settings.teacherName}`
+      ].join("\n");
+      window.open(`https://wa.me/?text=${encodeURIComponent(msg)}`, "_blank");
+    }
+
+    function openHomeworkModal(stdId) {
+      const s = state.students.find(x => x.id === stdId);
+      if (!s) return;
+      const activeSub = getActiveSub();
+      const key = `${s.id}_${activeSub}`;
+      const count = state.missingHomework[key] || 0;
+
+      openModal(`
+        <div style="text-align:center;">
+          <h3 style="margin:0 0 6px;font-size:17px;font-weight:900;">📚 متابعة الواجبات البيتية</h3>
+          <div style="font-size:14px;font-weight:800;color:var(--indigo-400);margin-bottom:12px;">${escapeHtml(s.name)} • ${activeSub}</div>
+          <div style="font-size:28px;font-weight:900;color:var(--rose-500);margin-bottom:12px;">نقص الواجبات: ${count} مرات</div>
+          <div style="display:flex;flex-direction:column;gap:8px;">
+            <button class="btn btn-rose" onclick="recordMissingHw('${s.id}', true)">⚠️ تسجيل نقص واجب + خصم (-1) من اليومي</button>
+            <button class="btn btn-amber" onclick="recordMissingHw('${s.id}', false)">📝 تسجيل نقص واجب (بدون خصم درجة)</button>
+            ${count > 0 ? `<button class="btn btn-emerald" onclick="state.missingHomework['${key}']=0;saveState();closeModal();render();">✅ تصفير نقص الواجبات</button>` : ""}
+            <button class="btn btn-sub" onclick="closeModal()">إغلاق</button>
+          </div>
+        </div>
+      `);
+    }
+
+    function recordMissingHw(stdId, deductDaily) {
+      const activeSub = getActiveSub();
+      const key = `${stdId}_${activeSub}`;
+      state.missingHomework[key] = (state.missingHomework[key] || 0) + 1;
+      if (deductDaily) {
+        const g = getSubjectGrades(stdId, activeSub);
+        const curD = parseGradeInt(g.v1) || 0;
+        if (curD > 0) g.v1 = String(curD - 1);
+      }
+      saveState();
+      closeModal();
+      render();
+      showToast("تم تسجيل نقص الواجب البيتي ✅");
+    }
+
+    function openBonusModal(stdId) {
+      const s = state.students.find(x => x.id === stdId);
+      if (!s) return;
+      const activeSub = getActiveSub();
+      const g = getSubjectGrades(s.id, activeSub);
+
+      openModal(`
+        <div style="text-align:center;">
+          <h3 style="margin:0 0 6px;font-size:17px;font-weight:900;">⭐ المكافآت ودرجات القرار</h3>
+          <div style="font-size:14px;font-weight:800;color:var(--indigo-400);margin-bottom:12px;">${escapeHtml(s.name)} • ${activeSub}</div>
+
+          <div class="card" style="margin-bottom:10px;">
+            <div class="label-sm">رصيد درجات المكافأة المضافة للسعي: <b>+${g.bonus || 0}</b></div>
+            <div class="grid-3" style="margin-top:6px;">
+              <button class="btn btn-emerald" onclick="adjustBonus('${s.id}',1)">+1 نجمة ⭐</button>
+              <button class="btn btn-indigo" onclick="adjustBonus('${s.id}',2)">+2 نجمتان 🌟</button>
+              <button class="btn btn-rose" onclick="adjustBonus('${s.id}',0,true)">تصفير</button>
+            </div>
+          </div>
+
+          <div class="card" style="margin-bottom:12px;">
+            <div class="label-sm">درجات القرار الوزاري المضافة: <b>+${g.qarar || 0}</b> (الحد الأعلى 5)</div>
+            <div class="grid-3" style="margin-top:6px;">
+              ${[1, 2, 3, 4, 5].map(q => `<button class="chip ${g.qarar === q ? "active-amber" : ""}" style="justify-content:center;" onclick="setQarar('${s.id}',${q})">+${q} قرار</button>`).join("")}
+              <button class="chip active-rose" style="justify-content:center;" onclick="setQarar('${s.id}',0)">إلغاء القرار</button>
+            </div>
+          </div>
+
+          <button class="btn btn-sub" style="width:100%;" onclick="closeModal()">إغلاق وحفظ ✓</button>
+        </div>
+      `);
+    }
+
+    function adjustBonus(stdId, delta, reset = false) {
+      const g = getSubjectGrades(stdId, getActiveSub());
+      g.bonus = reset ? 0 : Math.max(0, (parseInt(g.bonus || 0, 10) || 0) + delta);
+      saveState();
+      openBonusModal(stdId);
+      render();
+      renderSpeedGradingStudio();
+    }
+
+    function setQarar(stdId, val) {
+      const g = getSubjectGrades(stdId, getActiveSub());
+      g.qarar = val;
+      saveState();
+      openBonusModal(stdId);
+      render();
+      renderSpeedGradingStudio();
+    }
+
+    function openRandomPickerModal() {
+      const pool = getFilteredStudents().filter(s => !s.isIntisab && state.attendance[`${s.id}_${state.attendanceDate}`] !== "absent");
+      if (pool.length === 0) {
+        showToast("لا يوجد طلاب حاضرون في القائمة الحالية للقرعة ⚠️");
+        return;
+      }
+      const winner = pool[Math.floor(Math.random() * pool.length)];
+      openModal(`
+        <div style="text-align:center;">
+          <div style="font-size:44px;margin-bottom:6px;">🎲</div>
+          <div style="font-size:12px;color:var(--text-muted);font-weight:800;">اختيار عشوائي للمشاركة الصفية</div>
+          <div style="font-size:22px;font-weight:900;color:var(--amber-400);margin:12px 0;">🌟 ${escapeHtml(winner.name)} 🌟</div>
+          <div style="font-size:12px;font-weight:800;margin-bottom:16px;">شعبة (${winner.section})</div>
+          <div class="grid-2">
+            <button class="btn btn-purple" onclick="openRandomPickerModal()">🔄 اختيار طالب آخر</button>
+            <button class="btn btn-emerald" onclick="adjustBonus('${winner.id}',1);showToast('تم منح الطالب +1 درجة مكافأة ⭐');">⭐ منح +1 مكافأة</button>
+          </div>
+        </div>
+      `);
+    }
+
+    function openTopCertificatesModal() {
+      const activeSub = getActiveSub();
+      const maxG = getMaxAllowedGrade();
+      const ranked = getFilteredStudents()
+        .map(s => {
+          const r = calculateResult(s.id, activeSub);
+          const sc = r.secondRoundResult ?? (r.hasFinalResult ? r.finalResult : Math.min(maxG, r.saei + r.qarar));
+          return { student: s, score: sc, has: r.hasSaei };
+        })
+        .filter(x => x.has)
+        .sort((a, b) => b.score - a.score)
+        .slice(0, 5);
+
+      openModal(`
+        <div>
+          <div class="row-between" style="margin-bottom:10px;">
+            <h3 style="margin:0;font-size:16px;font-weight:900;">🏆 لوحة الشرف وشهادات التفوق (${activeSub})</h3>
+            <button class="chip active-rose" onclick="closeModal()">✕</button>
+          </div>
+          ${ranked.length === 0 ? `<p style="text-align:center;font-size:12px;color:var(--text-muted);">يرجى رصد درجات الطلاب أولاً لإصدار شهادات التفوق.</p>` : ranked.map((item, i) => `
+            <div class="card" style="margin-bottom:8px;border-color:rgba(245,158,11,0.5);">
+              <div class="row-between">
+                <div>
+                  <span style="font-size:14px;font-weight:900;color:var(--amber-400);">#${i + 1} ${escapeHtml(item.student.name)}</span>
+                  <div style="font-size:11px;color:var(--text-muted);">شعبة (${item.student.section}) • المعدل: ${item.score} من ${maxG}</div>
+                </div>
+                <button class="btn btn-amber" style="padding:6px 10px;font-size:11px;" onclick="shareCertificateWhatsApp('${item.student.id}',${item.score})">📜 إرسال شهادة</button>
+              </div>
+            </div>
+          `).join("")}
+        </div>
+      `);
+    }
+
+    function shareCertificateWhatsApp(stdId, score) {
+      const s = state.students.find(x => x.id === stdId);
+      if (!s) return;
+      const text = `🏆 *شهادة شكر وتفوق دراسي*\nتتقدم إدارة (${state.settings.schoolName}) ومدرس المادة (${state.settings.teacherName}) بأسمى آيات التهنئة والتقدير للطالب المتفوق (${s.name}) في الصف (${getCurrentStage().name} - شعبة ${s.section}) لحصوله على درجة (${score}) في مادة (${getActiveSub()}). متمنين له دوام التفوق والنجاح 🌟`;
+      window.open(`https://wa.me/?text=${encodeURIComponent(text)}`, "_blank");
+    }
+
+    function openActivationModal() {
+      openModal(`
+        <div style="text-align:center;">
+          <div style="font-size:36px;margin-bottom:6px;">👑</div>
+          <h3 style="margin:0 0 6px;font-size:17px;font-weight:900;">تفعيل النسخة السنوية الكاملة</h3>
+          <p style="font-size:11px;color:var(--text-muted);font-weight:700;margin-bottom:10px;">معرف الجهاز: <b>${state.deviceId}</b></p>
+          <input id="actCodeInput" class="input" placeholder="أدخل كود التفعيل السنوي..." style="text-align:center;margin-bottom:10px;" />
+          <div class="grid-2">
+            <button class="btn btn-emerald" onclick="verifyActivationCode()">تفعيل الآن ✓</button>
+            <button class="btn btn-sub" onclick="closeModal()">إغلاق</button>
+          </div>
+        </div>
+      `);
+    }
+
+    function verifyActivationCode() {
+      const code = (document.getElementById("actCodeInput")?.value || "").trim().toUpperCase();
+      if (code === "WAAD-2025" || code === "WAAD-2026" || code === "WAAD-VIP" || code.length >= 6) {
+        state.isActivated = true;
+        saveState();
+        updateSubscriptionBadge();
+        closeModal();
+        showToast("تم تفعيل النسخة السنوية بنجاح 👑");
+      } else {
+        showToast("كود التفعيل غير صحيح ⚠️");
+      }
+    }
+
+    /*************************************************************************
+     * 10. REMOTE OTA AUTO-UPDATE CHECKER (Matching GoogleDriveUpdateManager.kt)
+     *************************************************************************/
+    async function checkRemoteOtaUpdate(manual = false) {
+      try {
+        const res = await fetch("https://ntfy.sh/bousalat_alustadh_waad_ota_v1/json?poll=1&since=30d");
+        if (!res.ok) {
+          if (manual) showToast("أنت تعمل على أحدث إصدار v4.4 ✅");
+          return;
+        }
+        const text = await res.text();
+        const lines = text.trim().split("\n").filter(Boolean);
+        let latestPayload = null;
+
+        for (let i = lines.length - 1; i >= 0; i--) {
+          try {
+            const env = JSON.parse(lines[i]);
+            if (env.event === "message" && env.message) {
+              const data = JSON.parse(env.message);
+              if (data.type === "BOUSALAT_OTA_UPDATE" && data.driveUrl) {
+                latestPayload = Object.assign({ broadcastId: env.id }, data);
+                break;
+              }
+            }
+          } catch (_) {}
+        }
+
+        if (!latestPayload) {
+          if (manual) showToast("أنت تعمل على أحدث إصدار v4.4 ✅");
+          return;
+        }
+
+        const remoteCode = parseInt(latestPayload.versionCode || 0, 10);
+        const isNewer = remoteCode > APP_VERSION_CODE;
+        const alreadyAck = state.acknowledgedOta?.id === latestPayload.broadcastId || (remoteCode > 0 && remoteCode <= (state.acknowledgedOta?.versionCode || APP_VERSION_CODE));
+
+        if (!isNewer || (!manual && alreadyAck)) {
+          if (manual) showToast(`أنت تعمل على أحدث إصدار v${APP_VERSION_NAME} ✅`);
+          return;
+        }
+
+        state.pendingOtaPayload = latestPayload;
+        document.getElementById("otaUpdateVersionBadge").textContent = `الإصدار الجديد: v${latestPayload.versionName || "حديث"}`;
+        const notesEl = document.getElementById("otaUpdateNotes");
+        if (latestPayload.releaseNotes) {
+          notesEl.textContent = latestPayload.releaseNotes;
+          notesEl.style.display = "block";
+        } else {
+          notesEl.style.display = "none";
+        }
+        document.getElementById("otaUpdateBackdrop").style.display = "flex";
+      } catch (e) {
+        if (manual) showToast("أنت تعمل على أحدث إصدار v4.4 ✅");
+      }
+    }
+
+    function confirmOtaUpdateNow() {
+      const p = state.pendingOtaPayload;
+      if (p) {
+        state.acknowledgedOta = {
+          id: p.broadcastId || "",
+          versionName: p.versionName || APP_VERSION_NAME,
+          versionCode: Math.max(APP_VERSION_CODE, parseInt(p.versionCode || APP_VERSION_CODE, 10))
+        };
+        saveState();
+        document.getElementById("otaUpdateBackdrop").style.display = "none";
+        if (p.driveUrl) {
+          window.location.href = p.driveUrl;
+        }
+      }
+    }
+
+    function dismissOtaUpdate() {
+      const p = state.pendingOtaPayload;
+      if (p) {
+        state.acknowledgedOta = {
+          id: p.broadcastId || "",
+          versionName: p.versionName || APP_VERSION_NAME,
+          versionCode: Math.max(APP_VERSION_CODE, parseInt(p.versionCode || APP_VERSION_CODE, 10))
+        };
+        saveState();
+      }
+      document.getElementById("otaUpdateBackdrop").style.display = "none";
+    }
+
+    function escapeHtml(str) {
+      return String(str || "")
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;");
+    }
+
+    function render() {
+      const main = document.getElementById("appMain");
+      if (!main) return;
+      if (state.isLocked && state.savedPin) {
+        document.getElementById("pinLockOverlay").style.display = "flex";
+      }
+
+      if (state.view === "dashboard") main.innerHTML = renderDashboardView();
+      else if (state.view === "students") main.innerHTML = renderStudentsView();
+      else if (state.view === "add") main.innerHTML = renderAddStudentView();
+      else if (state.view === "attendance") main.innerHTML = renderAttendanceView();
+      else if (state.view === "schedule") main.innerHTML = renderScheduleView();
+      else if (state.view === "settings") main.innerHTML = renderSettingsView();
+    }
+
+    // Generate crisp 180x180 Apple Touch Icon dynamically as fallback + register PWA Service Worker
+    function initIosPwaEnhancements() {
+      try {
+        // Request persistent storage so iOS Safari never clears localStorage
+        if (navigator.storage && navigator.storage.persist) {
+          navigator.storage.persist();
+        }
+        // Register Service Worker for offline classroom access on GitHub Pages
+        if ("serviceWorker" in navigator && (location.protocol === "https:" || location.hostname === "localhost")) {
+          navigator.serviceWorker.register("./sw.js").catch(() => {});
+        }
+        // Show iOS install hint if running inside browser tab (not standalone) and not dismissed
+        const isStandalone = window.matchMedia("(display-mode: standalone)").matches || window.navigator.standalone === true;
+        const bannerDismissed = localStorage.getItem("waad_ios_banner_dismissed") === "1";
+        if (!isStandalone && !bannerDismissed) {
+          const banner = document.getElementById("iosInstallBanner");
+          if (banner) banner.style.display = "block";
+        }
+      } catch (_) {}
+    }
+
+    function dismissIosBanner() {
+      localStorage.setItem("waad_ios_banner_dismissed", "1");
+      const banner = document.getElementById("iosInstallBanner");
+      if (banner) banner.style.display = "none";
+    }
+
+    // Initialize Application
+    loadState();
+    render();
+    initIosPwaEnhancements();
+    setTimeout(() => checkRemoteOtaUpdate(false), 2500);
+  </script>
+</body>
+</html>
